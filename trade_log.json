@@ -1,0 +1,2192 @@
+[
+  {
+    "direction": "SHORT",
+    "entry": 20092.57,
+    "sl": 20568.91149096005,
+    "tp": 18901.716272599875,
+    "entryIdx": 15,
+    "entryTime": 1661788800000,
+    "result": "LOSS",
+    "exitIdx": 18
+  },
+  {
+    "direction": "SHORT",
+    "entry": 19757.11,
+    "sl": 20447.7,
+    "tp": 18030.635000000002,
+    "entryIdx": 20,
+    "entryTime": 1661860800000,
+    "result": "LOSS",
+    "exitIdx": 23
+  },
+  {
+    "direction": "SHORT",
+    "entry": 20144.59,
+    "sl": 20698.930158135878,
+    "tp": 18758.73960466031,
+    "entryIdx": 26,
+    "entryTime": 1661947200000,
+    "result": "WIN",
+    "exitIdx": 63
+  },
+  {
+    "direction": "SHORT",
+    "entry": 18789.67,
+    "sl": 19282.220891156823,
+    "tp": 17558.29277210794,
+    "entryIdx": 64,
+    "entryTime": 1662494400000,
+    "result": "LOSS",
+    "exitIdx": 70
+  },
+  {
+    "direction": "SHORT",
+    "entry": 19252.07,
+    "sl": 19724.08867363749,
+    "tp": 18072.023315906277,
+    "entryIdx": 74,
+    "entryTime": 1662638400000,
+    "result": "LOSS",
+    "exitIdx": 77
+  },
+  {
+    "direction": "SHORT",
+    "entry": 20836.27,
+    "sl": 22800.35,
+    "tp": 15926.070000000005,
+    "entryIdx": 104,
+    "entryTime": 1663070400000,
+    "result": "WIN",
+    "exitIdx": 448
+  },
+  {
+    "direction": "SHORT",
+    "entry": 16591.1,
+    "sl": 17337.653516601655,
+    "tp": 14724.716208495855,
+    "entryIdx": 476,
+    "entryTime": 1668427200000,
+    "result": "LOSS",
+    "exitIdx": 599
+  },
+  {
+    "direction": "SHORT",
+    "entry": 16927.82,
+    "sl": 17184.777012142327,
+    "tp": 16285.427469644183,
+    "entryIdx": 603,
+    "entryTime": 1670256000000,
+    "result": "LOSS",
+    "exitIdx": 621
+  },
+  {
+    "direction": "SHORT",
+    "entry": 17089.8,
+    "sl": 17238.505340273317,
+    "tp": 16718.036649316702,
+    "entryIdx": 640,
+    "entryTime": 1670788800000,
+    "result": "LOSS",
+    "exitIdx": 646
+  },
+  {
+    "direction": "LONG",
+    "entry": 17445.24,
+    "sl": 17153.75,
+    "tp": 18173.965000000004,
+    "entryIdx": 649,
+    "entryTime": 1670918400000,
+    "result": "WIN",
+    "exitIdx": 657
+  },
+  {
+    "direction": "SHORT",
+    "entry": 16972.25,
+    "sl": 17292.95107726531,
+    "tp": 16170.497306836725,
+    "entryIdx": 668,
+    "entryTime": 1671192000000,
+    "result": "LOSS",
+    "exitIdx": 812
+  },
+  {
+    "direction": "LONG",
+    "entry": 21143.66,
+    "sl": 20706.37496811826,
+    "tp": 22236.87257970435,
+    "entryIdx": 878,
+    "entryTime": 1674216000000,
+    "result": "WIN",
+    "exitIdx": 880
+  },
+  {
+    "direction": "LONG",
+    "entry": 23050,
+    "sl": 22459.066611117087,
+    "tp": 24527.333472207283,
+    "entryIdx": 910,
+    "entryTime": 1674676800000,
+    "result": "LOSS",
+    "exitIdx": 995
+  },
+  {
+    "direction": "LONG",
+    "entry": 21996.01,
+    "sl": 21692.029895165844,
+    "tp": 22755.96026208538,
+    "entryIdx": 1017,
+    "entryTime": 1676217600000,
+    "result": "LOSS",
+    "exitIdx": 1018
+  },
+  {
+    "direction": "LONG",
+    "entry": 22042.53,
+    "sl": 21533.86,
+    "tp": 23314.204999999994,
+    "entryIdx": 1028,
+    "entryTime": 1676376000000,
+    "result": "WIN",
+    "exitIdx": 1035
+  },
+  {
+    "direction": "LONG",
+    "entry": 24420.01,
+    "sl": 23799.967413996575,
+    "tp": 25970.11646500856,
+    "entryIdx": 1061,
+    "entryTime": 1676851200000,
+    "result": "LOSS",
+    "exitIdx": 1076
+  },
+  {
+    "direction": "LONG",
+    "entry": 23506.27,
+    "sl": 23042.616482389407,
+    "tp": 24665.403794026483,
+    "entryIdx": 1101,
+    "entryTime": 1677427200000,
+    "result": "LOSS",
+    "exitIdx": 1114
+  },
+  {
+    "direction": "LONG",
+    "entry": 23713.2,
+    "sl": 23231.037669448648,
+    "tp": 24918.60582637838,
+    "entryIdx": 1116,
+    "entryTime": 1677643200000,
+    "result": "LOSS",
+    "exitIdx": 1124
+  },
+  {
+    "direction": "LONG",
+    "entry": 23466.85,
+    "sl": 23017.604131394586,
+    "tp": 24589.96467151353,
+    "entryIdx": 1125,
+    "entryTime": 1677772800000,
+    "result": "LOSS",
+    "exitIdx": 1127
+  },
+  {
+    "direction": "SHORT",
+    "entry": 22388,
+    "sl": 22720.628417157757,
+    "tp": 21556.42895710561,
+    "entryIdx": 1145,
+    "entryTime": 1678060800000,
+    "result": "WIN",
+    "exitIdx": 1165
+  },
+  {
+    "direction": "LONG",
+    "entry": 28582.89,
+    "sl": 27283.19,
+    "tp": 31832.14,
+    "entryIdx": 1250,
+    "entryTime": 1679572800000,
+    "result": "LOSS",
+    "exitIdx": 1258
+  },
+  {
+    "direction": "LONG",
+    "entry": 27802,
+    "sl": 27072.15360328621,
+    "tp": 29626.615991784478,
+    "entryIdx": 1268,
+    "entryTime": 1679832000000,
+    "result": "LOSS",
+    "exitIdx": 1274
+  },
+  {
+    "direction": "LONG",
+    "entry": 27419.87,
+    "sl": 26702.068781321515,
+    "tp": 29214.373046696208,
+    "entryIdx": 1281,
+    "entryTime": 1680019200000,
+    "result": "WIN",
+    "exitIdx": 1359
+  },
+  {
+    "direction": "LONG",
+    "entry": 30326.61,
+    "sl": 29775.359338313992,
+    "tp": 31704.736654215023,
+    "entryIdx": 1383,
+    "entryTime": 1681488000000,
+    "result": "LOSS",
+    "exitIdx": 1397
+  },
+  {
+    "direction": "LONG",
+    "entry": 30379.98,
+    "sl": 29694.68,
+    "tp": 32093.229999999996,
+    "entryIdx": 1405,
+    "entryTime": 1681804800000,
+    "result": "LOSS",
+    "exitIdx": 1411
+  },
+  {
+    "direction": "SHORT",
+    "entry": 27453.27,
+    "sl": 28000.424086870422,
+    "tp": 26085.384782823945,
+    "entryIdx": 1440,
+    "entryTime": 1682308800000,
+    "result": "LOSS",
+    "exitIdx": 1450
+  },
+  {
+    "direction": "SHORT",
+    "entry": 27892.22,
+    "sl": 29897.33,
+    "tp": 22879.445,
+    "entryIdx": 1455,
+    "entryTime": 1682524800000,
+    "result": "LOSS",
+    "exitIdx": 1478
+  },
+  {
+    "direction": "LONG",
+    "entry": 28681.2,
+    "sl": 28021.85657071781,
+    "tp": 30329.558573205475,
+    "entryIdx": 1491,
+    "entryTime": 1683043200000,
+    "result": "LOSS",
+    "exitIdx": 1524
+  },
+  {
+    "direction": "SHORT",
+    "entry": 27689.31,
+    "sl": 28356.85517101711,
+    "tp": 26020.447072457235,
+    "entryIdx": 1539,
+    "entryTime": 1683734400000,
+    "result": "WIN",
+    "exitIdx": 1551
+  },
+  {
+    "direction": "SHORT",
+    "entry": 27037.32,
+    "sl": 27504.11902879741,
+    "tp": 25870.322428006475,
+    "entryIdx": 1574,
+    "entryTime": 1684238400000,
+    "result": "LOSS",
+    "exitIdx": 1582
+  },
+  {
+    "direction": "SHORT",
+    "entry": 27083.5,
+    "sl": 27541.5653645303,
+    "tp": 25938.336588674254,
+    "entryIdx": 1586,
+    "entryTime": 1684411200000,
+    "result": "WIN",
+    "exitIdx": 1625
+  },
+  {
+    "direction": "SHORT",
+    "entry": 27166.64,
+    "sl": 27680,
+    "tp": 25883.239999999998,
+    "entryIdx": 1662,
+    "entryTime": 1685505600000,
+    "result": "WIN",
+    "exitIdx": 1695
+  },
+  {
+    "direction": "SHORT",
+    "entry": 26345.29,
+    "sl": 26968.91340821818,
+    "tp": 24786.231479454553,
+    "entryIdx": 1706,
+    "entryTime": 1686139200000,
+    "result": "WIN",
+    "exitIdx": 1753
+  },
+  {
+    "direction": "LONG",
+    "entry": 26845.78,
+    "sl": 26433.861187544335,
+    "tp": 27875.57703113916,
+    "entryIdx": 1780,
+    "entryTime": 1687204800000,
+    "result": "WIN",
+    "exitIdx": 1785
+  },
+  {
+    "direction": "LONG",
+    "entry": 30403.35,
+    "sl": 29788.96295537261,
+    "tp": 31939.317611568466,
+    "entryIdx": 1818,
+    "entryTime": 1687752000000,
+    "result": "LOSS",
+    "exitIdx": 1844
+  },
+  {
+    "direction": "LONG",
+    "entry": 30502.01,
+    "sl": 30035.987664437358,
+    "tp": 31667.0658389066,
+    "entryIdx": 1856,
+    "entryTime": 1688299200000,
+    "result": "LOSS",
+    "exitIdx": 1880
+  },
+  {
+    "direction": "LONG",
+    "entry": 30349.52,
+    "sl": 29975.045264226177,
+    "tp": 31285.70683943456,
+    "entryIdx": 1898,
+    "entryTime": 1688904000000,
+    "result": "LOSS",
+    "exitIdx": 1901
+  },
+  {
+    "direction": "LONG",
+    "entry": 30316.46,
+    "sl": 29968.826598352047,
+    "tp": 31185.54350411988,
+    "entryIdx": 1904,
+    "entryTime": 1688990400000,
+    "result": "WIN",
+    "exitIdx": 1922
+  },
+  {
+    "direction": "LONG",
+    "entry": 31612.52,
+    "sl": 30718.75,
+    "tp": 33846.945,
+    "entryIdx": 1923,
+    "entryTime": 1689264000000,
+    "result": "LOSS",
+    "exitIdx": 1929
+  },
+  {
+    "direction": "LONG",
+    "entry": 30201.98,
+    "sl": 29805.01616435207,
+    "tp": 31194.389589119823,
+    "entryIdx": 1962,
+    "entryTime": 1689825600000,
+    "result": "LOSS",
+    "exitIdx": 1964
+  },
+  {
+    "direction": "LONG",
+    "entry": 29908,
+    "sl": 29617.69835138659,
+    "tp": 30633.754121533526,
+    "entryIdx": 1980,
+    "entryTime": 1690084800000,
+    "result": "LOSS",
+    "exitIdx": 1987
+  },
+  {
+    "direction": "SHORT",
+    "entry": 29350,
+    "sl": 29684.760513490266,
+    "tp": 28513.098716274333,
+    "entryIdx": 2002,
+    "entryTime": 1690401600000,
+    "result": "LOSS",
+    "exitIdx": 2038
+  },
+  {
+    "direction": "LONG",
+    "entry": 29631.38,
+    "sl": 29243.798610026897,
+    "tp": 30600.333474932762,
+    "entryIdx": 2039,
+    "entryTime": 1690934400000,
+    "result": "LOSS",
+    "exitIdx": 2042
+  },
+  {
+    "direction": "SHORT",
+    "entry": 29147.99,
+    "sl": 29555.546325984535,
+    "tp": 28129.099185038667,
+    "entryIdx": 2043,
+    "entryTime": 1690992000000,
+    "result": "LOSS",
+    "exitIdx": 2078
+  },
+  {
+    "direction": "SHORT",
+    "entry": 29414.77,
+    "sl": 29785.41028230756,
+    "tp": 28488.169294231102,
+    "entryIdx": 2085,
+    "entryTime": 1691596800000,
+    "result": "WIN",
+    "exitIdx": 2129
+  },
+  {
+    "direction": "SHORT",
+    "entry": 26000,
+    "sl": 26447.97,
+    "tp": 24880.074999999997,
+    "entryIdx": 2174,
+    "entryTime": 1692878400000,
+    "result": "LOSS",
+    "exitIdx": 2204
+  },
+  {
+    "direction": "LONG",
+    "entry": 27833.98,
+    "sl": 27349.67,
+    "tp": 29044.755000000005,
+    "entryIdx": 2205,
+    "entryTime": 1693324800000,
+    "result": "LOSS",
+    "exitIdx": 2207
+  },
+  {
+    "direction": "SHORT",
+    "entry": 26921.96,
+    "sl": 27367.681316018938,
+    "tp": 25807.656709952655,
+    "entryIdx": 2216,
+    "entryTime": 1693483200000,
+    "result": "WIN",
+    "exitIdx": 2218
+  },
+  {
+    "direction": "SHORT",
+    "entry": 26013.3,
+    "sl": 26365.85490170704,
+    "tp": 25131.912745732403,
+    "entryIdx": 2235,
+    "entryTime": 1693756800000,
+    "result": "LOSS",
+    "exitIdx": 2260
+  },
+  {
+    "direction": "SHORT",
+    "entry": 25837.98,
+    "sl": 26264.29,
+    "tp": 24772.204999999994,
+    "entryIdx": 2263,
+    "entryTime": 1694160000000,
+    "result": "LOSS",
+    "exitIdx": 2287
+  },
+  {
+    "direction": "LONG",
+    "entry": 26661.89,
+    "sl": 26354.625569887667,
+    "tp": 27430.05107528083,
+    "entryIdx": 2321,
+    "entryTime": 1694995200000,
+    "result": "WIN",
+    "exitIdx": 2329
+  },
+  {
+    "direction": "SHORT",
+    "entry": 26581.66,
+    "sl": 27031.382289278452,
+    "tp": 25457.354276803868,
+    "entryIdx": 2342,
+    "entryTime": 1695297600000,
+    "result": "LOSS",
+    "exitIdx": 2384
+  },
+  {
+    "direction": "LONG",
+    "entry": 28126.43,
+    "sl": 27733.453176640247,
+    "tp": 29108.872058399385,
+    "entryIdx": 2405,
+    "entryTime": 1696204800000,
+    "result": "LOSS",
+    "exitIdx": 2409
+  },
+  {
+    "direction": "LONG",
+    "entry": 27618.48,
+    "sl": 27170.841854993047,
+    "tp": 28737.575362517382,
+    "entryIdx": 2421,
+    "entryTime": 1696435200000,
+    "result": "LOSS",
+    "exitIdx": 2432
+  },
+  {
+    "direction": "LONG",
+    "entry": 27897.39,
+    "sl": 27546.78638086082,
+    "tp": 28773.89904784795,
+    "entryIdx": 2444,
+    "entryTime": 1696766400000,
+    "result": "LOSS",
+    "exitIdx": 2449
+  },
+  {
+    "direction": "SHORT",
+    "entry": 26900.06,
+    "sl": 27133.08406933319,
+    "tp": 26317.499826667034,
+    "entryIdx": 2486,
+    "entryTime": 1697371200000,
+    "result": "LOSS",
+    "exitIdx": 2488
+  },
+  {
+    "direction": "LONG",
+    "entry": 34258,
+    "sl": 33654.06177361349,
+    "tp": 35767.84556596629,
+    "entryIdx": 2569,
+    "entryTime": 1698566400000,
+    "result": "WIN",
+    "exitIdx": 2591
+  },
+  {
+    "direction": "LONG",
+    "entry": 34761.33,
+    "sl": 33984.63592899522,
+    "tp": 36703.065177511955,
+    "entryIdx": 2600,
+    "entryTime": 1699012800000,
+    "result": "WIN",
+    "exitIdx": 2634
+  },
+  {
+    "direction": "LONG",
+    "entry": 36960.33,
+    "sl": 36367.61755425558,
+    "tp": 38442.11111436106,
+    "entryIdx": 2658,
+    "entryTime": 1699848000000,
+    "result": "LOSS",
+    "exitIdx": 2662
+  },
+  {
+    "direction": "LONG",
+    "entry": 37500.71,
+    "sl": 36250.93,
+    "tp": 40625.159999999996,
+    "entryIdx": 2673,
+    "entryTime": 1700064000000,
+    "result": "LOSS",
+    "exitIdx": 2679
+  },
+  {
+    "direction": "LONG",
+    "entry": 36945.76,
+    "sl": 36317.47190137309,
+    "tp": 38516.480246567284,
+    "entryIdx": 2697,
+    "entryTime": 1700409600000,
+    "result": "LOSS",
+    "exitIdx": 2708
+  },
+  {
+    "direction": "LONG",
+    "entry": 37291.01,
+    "sl": 36372.19,
+    "tp": 39588.06,
+    "entryIdx": 2715,
+    "entryTime": 1700668800000,
+    "result": "WIN",
+    "exitIdx": 2775
+  },
+  {
+    "direction": "LONG",
+    "entry": 41937.08,
+    "sl": 40867.45020819949,
+    "tp": 44611.154479501296,
+    "entryIdx": 2840,
+    "entryTime": 1702468800000,
+    "result": "LOSS",
+    "exitIdx": 2867
+  },
+  {
+    "direction": "LONG",
+    "entry": 42658.51,
+    "sl": 41575.91,
+    "tp": 45365.009999999995,
+    "entryIdx": 2872,
+    "entryTime": 1702929600000,
+    "result": "LOSS",
+    "exitIdx": 2938
+  },
+  {
+    "direction": "LONG",
+    "entry": 43930,
+    "sl": 42989.22207518547,
+    "tp": 46281.94481203633,
+    "entryIdx": 2992,
+    "entryTime": 1704657600000,
+    "result": "WIN",
+    "exitIdx": 2997
+  },
+  {
+    "direction": "LONG",
+    "entry": 46488.52,
+    "sl": 44995.0535756154,
+    "tp": 50222.186060961496,
+    "entryIdx": 3009,
+    "entryTime": 1704902400000,
+    "result": "LOSS",
+    "exitIdx": 3010
+  },
+  {
+    "direction": "LONG",
+    "entry": 43252,
+    "sl": 42041.28,
+    "tp": 46278.8,
+    "entryIdx": 3044,
+    "entryTime": 1705406400000,
+    "result": "LOSS",
+    "exitIdx": 3057
+  },
+  {
+    "direction": "SHORT",
+    "entry": 41634.49,
+    "sl": 42295.71779871541,
+    "tp": 39981.42050321147,
+    "entryIdx": 3074,
+    "entryTime": 1705838400000,
+    "result": "WIN",
+    "exitIdx": 3081
+  },
+  {
+    "direction": "SHORT",
+    "entry": 39804.96,
+    "sl": 40696.99291699209,
+    "tp": 37574.87770751977,
+    "entryIdx": 3098,
+    "entryTime": 1706184000000,
+    "result": "LOSS",
+    "exitIdx": 3103
+  },
+  {
+    "direction": "LONG",
+    "entry": 42327.28,
+    "sl": 41593.466416900985,
+    "tp": 44161.81395774754,
+    "entryIdx": 3119,
+    "entryTime": 1706486400000,
+    "result": "WIN",
+    "exitIdx": 3178
+  },
+  {
+    "direction": "LONG",
+    "entry": 49034.94,
+    "sl": 47892.02295218943,
+    "tp": 51892.23261952644,
+    "entryIdx": 3213,
+    "entryTime": 1707840000000,
+    "result": "WIN",
+    "exitIdx": 3218
+  },
+  {
+    "direction": "LONG",
+    "entry": 52293,
+    "sl": 51414.337466241355,
+    "tp": 54489.65633439662,
+    "entryIdx": 3253,
+    "entryTime": 1708416000000,
+    "result": "LOSS",
+    "exitIdx": 3254
+  },
+  {
+    "direction": "LONG",
+    "entry": 52102.97,
+    "sl": 50750.01,
+    "tp": 55485.369999999995,
+    "entryIdx": 3255,
+    "entryTime": 1708444800000,
+    "result": "LOSS",
+    "exitIdx": 3260
+  },
+  {
+    "direction": "LONG",
+    "entry": 51553.96,
+    "sl": 50731.89013397597,
+    "tp": 53609.13466506007,
+    "entryIdx": 3279,
+    "entryTime": 1708790400000,
+    "result": "WIN",
+    "exitIdx": 3291
+  },
+  {
+    "direction": "LONG",
+    "entry": 66681.24,
+    "sl": 63264.24,
+    "tp": 75223.74000000002,
+    "entryIdx": 3342,
+    "entryTime": 1709697600000,
+    "result": "LOSS",
+    "exitIdx": 3421
+  },
+  {
+    "direction": "LONG",
+    "entry": 65781.9,
+    "sl": 62033.01,
+    "tp": 75154.12499999997,
+    "entryIdx": 3429,
+    "entryTime": 1710950400000,
+    "result": "LOSS",
+    "exitIdx": 3574
+  },
+  {
+    "direction": "SHORT",
+    "entry": 64565.26,
+    "sl": 67187.39101804327,
+    "tp": 58009.93245489181,
+    "entryIdx": 3584,
+    "entryTime": 1713182400000,
+    "result": "LOSS",
+    "exitIdx": 3628
+  },
+  {
+    "direction": "SHORT",
+    "entry": 64614.79,
+    "sl": 66750,
+    "tp": 59276.765,
+    "entryIdx": 3638,
+    "entryTime": 1713960000000,
+    "result": "WIN",
+    "exitIdx": 3675
+  },
+  {
+    "direction": "SHORT",
+    "entry": 60923.93,
+    "sl": 63465,
+    "tp": 54571.255000000005,
+    "entryIdx": 3734,
+    "entryTime": 1715342400000,
+    "result": "LOSS",
+    "exitIdx": 3753
+  },
+  {
+    "direction": "SHORT",
+    "entry": 61786.16,
+    "sl": 63065.16376273059,
+    "tp": 58588.65059317354,
+    "entryIdx": 3758,
+    "entryTime": 1715688000000,
+    "result": "LOSS",
+    "exitIdx": 3764
+  },
+  {
+    "direction": "LONG",
+    "entry": 66673.73,
+    "sl": 65594.51541643245,
+    "tp": 69371.76645891885,
+    "entryIdx": 3791,
+    "entryTime": 1716163200000,
+    "result": "WIN",
+    "exitIdx": 3795
+  },
+  {
+    "direction": "LONG",
+    "entry": 69734.29,
+    "sl": 68304.86808160873,
+    "tp": 73307.84479597815,
+    "entryIdx": 3810,
+    "entryTime": 1716436800000,
+    "result": "LOSS",
+    "exitIdx": 3812
+  },
+  {
+    "direction": "LONG",
+    "entry": 68906.94,
+    "sl": 67769.79428087252,
+    "tp": 71749.80429781871,
+    "entryIdx": 3831,
+    "entryTime": 1716739200000,
+    "result": "LOSS",
+    "exitIdx": 3839
+  },
+  {
+    "direction": "LONG",
+    "entry": 68535.41,
+    "sl": 67184.87516571263,
+    "tp": 71911.74708571845,
+    "entryIdx": 3854,
+    "entryTime": 1717070400000,
+    "result": "LOSS",
+    "exitIdx": 3861
+  },
+  {
+    "direction": "LONG",
+    "entry": 68243.1,
+    "sl": 67294.79555240272,
+    "tp": 70613.86111899321,
+    "entryIdx": 3871,
+    "entryTime": 1717315200000,
+    "result": "LOSS",
+    "exitIdx": 3873
+  },
+  {
+    "direction": "LONG",
+    "entry": 68391.69,
+    "sl": 67375.1148032636,
+    "tp": 70933.12799184103,
+    "entryIdx": 3875,
+    "entryTime": 1717372800000,
+    "result": "WIN",
+    "exitIdx": 3885
+  },
+  {
+    "direction": "LONG",
+    "entry": 70061.49,
+    "sl": 69215.43,
+    "tp": 72176.64000000004,
+    "entryIdx": 3920,
+    "entryTime": 1718020800000,
+    "result": "LOSS",
+    "exitIdx": 3923
+  },
+  {
+    "direction": "SHORT",
+    "entry": 67568.77,
+    "sl": 68556.23504621004,
+    "tp": 65100.107384474904,
+    "entryIdx": 3924,
+    "entryTime": 1718078400000,
+    "result": "LOSS",
+    "exitIdx": 3932
+  },
+  {
+    "direction": "SHORT",
+    "entry": 67538.55,
+    "sl": 69877.34,
+    "tp": 61691.57500000002,
+    "entryIdx": 3933,
+    "entryTime": 1718208000000,
+    "result": "WIN",
+    "exitIdx": 4003
+  },
+  {
+    "direction": "SHORT",
+    "entry": 61458.31,
+    "sl": 62675.70793644274,
+    "tp": 58414.815158893136,
+    "entryIdx": 4023,
+    "entryTime": 1719504000000,
+    "result": "LOSS",
+    "exitIdx": 4042
+  },
+  {
+    "direction": "SHORT",
+    "entry": 61947.19,
+    "sl": 63170.69,
+    "tp": 58888.44,
+    "entryIdx": 4052,
+    "entryTime": 1719921600000,
+    "result": "WIN",
+    "exitIdx": 4061
+  },
+  {
+    "direction": "SHORT",
+    "entry": 57381.16,
+    "sl": 58946.07554560788,
+    "tp": 53468.87113598033,
+    "entryIdx": 4080,
+    "entryTime": 1720324800000,
+    "result": "LOSS",
+    "exitIdx": 4098
+  },
+  {
+    "direction": "SHORT",
+    "entry": 57406.92,
+    "sl": 59559.73,
+    "tp": 52024.89499999999,
+    "entryIdx": 4106,
+    "entryTime": 1720699200000,
+    "result": "LOSS",
+    "exitIdx": 4120
+  },
+  {
+    "direction": "LONG",
+    "entry": 64125.98,
+    "sl": 62640.895232215524,
+    "tp": 67838.6919194612,
+    "entryIdx": 4153,
+    "entryTime": 1721376000000,
+    "result": "WIN",
+    "exitIdx": 4168
+  },
+  {
+    "direction": "LONG",
+    "entry": 68227.86,
+    "sl": 66781.22540999134,
+    "tp": 71844.44647502164,
+    "entryIdx": 4173,
+    "entryTime": 1721664000000,
+    "result": "LOSS",
+    "exitIdx": 4176
+  },
+  {
+    "direction": "LONG",
+    "entry": 67044.5,
+    "sl": 65420.8816061878,
+    "tp": 71103.54598453049,
+    "entryIdx": 4193,
+    "entryTime": 1721952000000,
+    "result": "LOSS",
+    "exitIdx": 4222
+  },
+  {
+    "direction": "SHORT",
+    "entry": 62638.19,
+    "sl": 64594.17808198746,
+    "tp": 57748.21979503135,
+    "entryIdx": 4239,
+    "entryTime": 1722614400000,
+    "result": "WIN",
+    "exitIdx": 4251
+  },
+  {
+    "direction": "SHORT",
+    "entry": 58726.67,
+    "sl": 60416.222556985216,
+    "tp": 54502.788607536946,
+    "entryIdx": 4294,
+    "entryTime": 1723406400000,
+    "result": "LOSS",
+    "exitIdx": 4298
+  },
+  {
+    "direction": "SHORT",
+    "entry": 59244.11,
+    "sl": 61160.15636926041,
+    "tp": 54453.994076848976,
+    "entryIdx": 4302,
+    "entryTime": 1723521600000,
+    "result": "LOSS",
+    "exitIdx": 4305
+  },
+  {
+    "direction": "SHORT",
+    "entry": 59436.45,
+    "sl": 61850,
+    "tp": 53402.57499999999,
+    "entryIdx": 4310,
+    "entryTime": 1723636800000,
+    "result": "LOSS",
+    "exitIdx": 4364
+  },
+  {
+    "direction": "LONG",
+    "entry": 63528.85,
+    "sl": 62381.64379811703,
+    "tp": 66396.86550470743,
+    "entryIdx": 4382,
+    "entryTime": 1724673600000,
+    "result": "LOSS",
+    "exitIdx": 4387
+  },
+  {
+    "direction": "SHORT",
+    "entry": 59265.36,
+    "sl": 60991.86075649176,
+    "tp": 54949.108108770604,
+    "entryIdx": 4401,
+    "entryTime": 1724947200000,
+    "result": "WIN",
+    "exitIdx": 4448
+  },
+  {
+    "direction": "SHORT",
+    "entry": 53538.03,
+    "sl": 55228.56235184827,
+    "tp": 49311.69912037933,
+    "entryIdx": 4449,
+    "entryTime": 1725638400000,
+    "result": "LOSS",
+    "exitIdx": 4462
+  },
+  {
+    "direction": "LONG",
+    "entry": 59734.75,
+    "sl": 58406.10951666252,
+    "tp": 63056.351208343716,
+    "entryIdx": 4491,
+    "entryTime": 1726243200000,
+    "result": "LOSS",
+    "exitIdx": 4505
+  },
+  {
+    "direction": "LONG",
+    "entry": 59085.97,
+    "sl": 57968.877840766036,
+    "tp": 61878.70039808492,
+    "entryIdx": 4513,
+    "entryTime": 1726560000000,
+    "result": "WIN",
+    "exitIdx": 4523
+  },
+  {
+    "direction": "LONG",
+    "entry": 63168.86,
+    "sl": 62162.29783843291,
+    "tp": 65685.26540391773,
+    "entryIdx": 4545,
+    "entryTime": 1727020800000,
+    "result": "WIN",
+    "exitIdx": 4569
+  },
+  {
+    "direction": "LONG",
+    "entry": 61884.65,
+    "sl": 60513.59969348658,
+    "tp": 65312.27576628355,
+    "entryIdx": 4616,
+    "entryTime": 1728043200000,
+    "result": "LOSS",
+    "exitIdx": 4648
+  },
+  {
+    "direction": "LONG",
+    "entry": 62261.81,
+    "sl": 61037.07812052256,
+    "tp": 65323.639698693594,
+    "entryIdx": 4658,
+    "entryTime": 1728648000000,
+    "result": "WIN",
+    "exitIdx": 4676
+  },
+  {
+    "direction": "LONG",
+    "entry": 67294.28,
+    "sl": 66183.301737891,
+    "tp": 70071.72565527249,
+    "entryIdx": 4735,
+    "entryTime": 1729756800000,
+    "result": "LOSS",
+    "exitIdx": 4743
+  },
+  {
+    "direction": "LONG",
+    "entry": 67791.51,
+    "sl": 66779.23886363026,
+    "tp": 70322.1878409243,
+    "entryIdx": 4754,
+    "entryTime": 1730030400000,
+    "result": "WIN",
+    "exitIdx": 4762
+  },
+  {
+    "direction": "LONG",
+    "entry": 69634.88,
+    "sl": 68203.44291969744,
+    "tp": 73213.47270075642,
+    "entryIdx": 4808,
+    "entryTime": 1730808000000,
+    "result": "WIN",
+    "exitIdx": 4811
+  },
+  {
+    "direction": "LONG",
+    "entry": 73365.32,
+    "sl": 71191.04186951996,
+    "tp": 78801.01532620013,
+    "entryIdx": 4812,
+    "entryTime": 1730865600000,
+    "result": "WIN",
+    "exitIdx": 4836
+  },
+  {
+    "direction": "LONG",
+    "entry": 88431.99,
+    "sl": 85022.68830402225,
+    "tp": 96955.24423994443,
+    "entryIdx": 4868,
+    "entryTime": 1731672000000,
+    "result": "WIN",
+    "exitIdx": 4902
+  },
+  {
+    "direction": "LONG",
+    "entry": 97879.98,
+    "sl": 95977.71183018333,
+    "tp": 102635.65042454167,
+    "entryIdx": 4925,
+    "entryTime": 1732492800000,
+    "result": "LOSS",
+    "exitIdx": 4928
+  },
+  {
+    "direction": "LONG",
+    "entry": 95562.72,
+    "sl": 92846.85,
+    "tp": 102352.39499999999,
+    "entryIdx": 4940,
+    "entryTime": 1732708800000,
+    "result": "WIN",
+    "exitIdx": 4985
+  },
+  {
+    "direction": "LONG",
+    "entry": 101441.29,
+    "sl": 98006.2035370932,
+    "tp": 110029.006157267,
+    "entryIdx": 4995,
+    "entryTime": 1733500800000,
+    "result": "LOSS",
+    "exitIdx": 5012
+  },
+  {
+    "direction": "LONG",
+    "entry": 100364.46,
+    "sl": 97652.17013513988,
+    "tp": 107145.1846621503,
+    "entryIdx": 5024,
+    "entryTime": 1733918400000,
+    "result": "WIN",
+    "exitIdx": 5055
+  },
+  {
+    "direction": "LONG",
+    "entry": 98299.9,
+    "sl": 94071.89,
+    "tp": 108869.92499999999,
+    "entryIdx": 5102,
+    "entryTime": 1735041600000,
+    "result": "LOSS",
+    "exitIdx": 5120
+  },
+  {
+    "direction": "SHORT",
+    "entry": 92789.06,
+    "sl": 95017.22,
+    "tp": 87218.65999999999,
+    "entryIdx": 5140,
+    "entryTime": 1735588800000,
+    "result": "LOSS",
+    "exitIdx": 5144
+  },
+  {
+    "direction": "LONG",
+    "entry": 98080.59,
+    "sl": 96772.95634754191,
+    "tp": 101349.67413114522,
+    "entryIdx": 5175,
+    "entryTime": 1736092800000,
+    "result": "WIN",
+    "exitIdx": 5180
+  },
+  {
+    "direction": "SHORT",
+    "entry": 96452.28,
+    "sl": 98459.59867341569,
+    "tp": 91433.98331646077,
+    "entryIdx": 5187,
+    "entryTime": 1736265600000,
+    "result": "WIN",
+    "exitIdx": 5200
+  },
+  {
+    "direction": "SHORT",
+    "entry": 93738.25,
+    "sl": 96228.97252174295,
+    "tp": 87511.44369564264,
+    "entryIdx": 5204,
+    "entryTime": 1736510400000,
+    "result": "LOSS",
+    "exitIdx": 5227
+  },
+  {
+    "direction": "LONG",
+    "entry": 107161.45,
+    "sl": 101544.35,
+    "tp": 121204.19999999998,
+    "entryIdx": 5262,
+    "entryTime": 1737345600000,
+    "result": "LOSS",
+    "exitIdx": 5265
+  },
+  {
+    "direction": "LONG",
+    "entry": 105272.32,
+    "sl": 101320.59,
+    "tp": 115151.64500000003,
+    "entryIdx": 5282,
+    "entryTime": 1737633600000,
+    "result": "LOSS",
+    "exitIdx": 5303
+  },
+  {
+    "direction": "LONG",
+    "entry": 102784.97,
+    "sl": 100199.14888776297,
+    "tp": 109249.52278059257,
+    "entryIdx": 5312,
+    "entryTime": 1738065600000,
+    "result": "LOSS",
+    "exitIdx": 5339
+  },
+  {
+    "direction": "LONG",
+    "entry": 101878.55,
+    "sl": 98025.6,
+    "tp": 111510.92499999999,
+    "entryIdx": 5349,
+    "entryTime": 1738598400000,
+    "result": "LOSS",
+    "exitIdx": 5353
+  },
+  {
+    "direction": "SHORT",
+    "entry": 97769.73,
+    "sl": 101086.25038752012,
+    "tp": 89478.42903119967,
+    "entryIdx": 5356,
+    "entryTime": 1738699200000,
+    "result": "WIN",
+    "exitIdx": 5478
+  },
+  {
+    "direction": "SHORT",
+    "entry": 85576.72,
+    "sl": 91024.08,
+    "tp": 71958.32,
+    "entryIdx": 5517,
+    "entryTime": 1741017600000,
+    "result": "LOSS",
+    "exitIdx": 5530
+  },
+  {
+    "direction": "SHORT",
+    "entry": 88538.64,
+    "sl": 92151.89991278907,
+    "tp": 79505.49021802733,
+    "entryIdx": 5535,
+    "entryTime": 1741276800000,
+    "result": "WIN",
+    "exitIdx": 5558
+  },
+  {
+    "direction": "SHORT",
+    "entry": 81703.87,
+    "sl": 84883.19757618132,
+    "tp": 73755.55105954666,
+    "entryIdx": 5570,
+    "entryTime": 1741780800000,
+    "result": "LOSS",
+    "exitIdx": 5582
+  },
+  {
+    "direction": "SHORT",
+    "entry": 82400.39,
+    "sl": 84335.19,
+    "tp": 77563.38999999998,
+    "entryIdx": 5593,
+    "entryTime": 1742112000000,
+    "result": "LOSS",
+    "exitIdx": 5595
+  },
+  {
+    "direction": "SHORT",
+    "entry": 82573.8,
+    "sl": 84516.6102963513,
+    "tp": 77716.77425912177,
+    "entryIdx": 5596,
+    "entryTime": 1742155200000,
+    "result": "LOSS",
+    "exitIdx": 5601
+  },
+  {
+    "direction": "SHORT",
+    "entry": 83166.08,
+    "sl": 84994.7004023173,
+    "tp": 78594.52899420673,
+    "entryIdx": 5604,
+    "entryTime": 1742270400000,
+    "result": "LOSS",
+    "exitIdx": 5613
+  },
+  {
+    "direction": "SHORT",
+    "entry": 84170.37,
+    "sl": 86148.16475229233,
+    "tp": 79225.88311926916,
+    "entryIdx": 5619,
+    "entryTime": 1742486400000,
+    "result": "LOSS",
+    "exitIdx": 5639
+  },
+  {
+    "direction": "SHORT",
+    "entry": 86733.4,
+    "sl": 88229.72200498183,
+    "tp": 82992.59498754542,
+    "entryIdx": 5654,
+    "entryTime": 1742990400000,
+    "result": "WIN",
+    "exitIdx": 5671
+  },
+  {
+    "direction": "SHORT",
+    "entry": 82458.9,
+    "sl": 84039.01117283193,
+    "tp": 78508.62206792015,
+    "entryIdx": 5685,
+    "entryTime": 1743436800000,
+    "result": "LOSS",
+    "exitIdx": 5689
+  },
+  {
+    "direction": "SHORT",
+    "entry": 82501.5,
+    "sl": 88526.9,
+    "tp": 67438.00000000001,
+    "entryIdx": 5698,
+    "entryTime": 1743624000000,
+    "result": "LOSS",
+    "exitIdx": 5813
+  },
+  {
+    "direction": "LONG",
+    "entry": 93857,
+    "sl": 92483.2836393994,
+    "tp": 97291.29090150152,
+    "entryIdx": 5849,
+    "entryTime": 1745798400000,
+    "result": "WIN",
+    "exitIdx": 5870
+  },
+  {
+    "direction": "LONG",
+    "entry": 94964.5,
+    "sl": 93633.96195761095,
+    "tp": 98290.8451059726,
+    "entryIdx": 5901,
+    "entryTime": 1746547200000,
+    "result": "WIN",
+    "exitIdx": 5909
+  },
+  {
+    "direction": "LONG",
+    "entry": 103725.1,
+    "sl": 101673.7049365952,
+    "tp": 108853.58765851201,
+    "entryIdx": 5941,
+    "entryTime": 1747123200000,
+    "result": "LOSS",
+    "exitIdx": 5953
+  },
+  {
+    "direction": "LONG",
+    "entry": 103256.1,
+    "sl": 101389.86,
+    "tp": 107921.70000000001,
+    "entryIdx": 5954,
+    "entryTime": 1747310400000,
+    "result": "WIN",
+    "exitIdx": 5988
+  },
+  {
+    "direction": "LONG",
+    "entry": 109001.3,
+    "sl": 106858.42006625922,
+    "tp": 114358.49983435197,
+    "entryIdx": 6016,
+    "entryTime": 1748203200000,
+    "result": "LOSS",
+    "exitIdx": 6034
+  },
+  {
+    "direction": "LONG",
+    "entry": 108783.5,
+    "sl": 106957.22171058464,
+    "tp": 113349.1957235384,
+    "entryIdx": 6037,
+    "entryTime": 1748505600000,
+    "result": "LOSS",
+    "exitIdx": 6038
+  },
+  {
+    "direction": "LONG",
+    "entry": 105650.8,
+    "sl": 104102.21279331108,
+    "tp": 109522.26801672232,
+    "entryIdx": 6058,
+    "entryTime": 1748808000000,
+    "result": "LOSS",
+    "exitIdx": 6061
+  },
+  {
+    "direction": "LONG",
+    "entry": 105866.2,
+    "sl": 104221.12449128593,
+    "tp": 109978.88877178519,
+    "entryIdx": 6064,
+    "entryTime": 1748894400000,
+    "result": "LOSS",
+    "exitIdx": 6074
+  },
+  {
+    "direction": "SHORT",
+    "entry": 101909.6,
+    "sl": 104600.2,
+    "tp": 95183.10000000003,
+    "entryIdx": 6081,
+    "entryTime": 1749139200000,
+    "result": "LOSS",
+    "exitIdx": 6086
+  },
+  {
+    "direction": "LONG",
+    "entry": 107636.3,
+    "sl": 106262.7555492665,
+    "tp": 111070.16112683376,
+    "entryIdx": 6104,
+    "entryTime": 1749470400000,
+    "result": "LOSS",
+    "exitIdx": 6124
+  },
+  {
+    "direction": "LONG",
+    "entry": 105924.3,
+    "sl": 104460.91937654132,
+    "tp": 109582.7515586467,
+    "entryIdx": 6143,
+    "entryTime": 1750032000000,
+    "result": "LOSS",
+    "exitIdx": 6152
+  },
+  {
+    "direction": "LONG",
+    "entry": 105973.2,
+    "sl": 104426.71046884058,
+    "tp": 109839.42382789851,
+    "entryIdx": 6169,
+    "entryTime": 1750406400000,
+    "result": "LOSS",
+    "exitIdx": 6170
+  },
+  {
+    "direction": "SHORT",
+    "entry": 103309.5,
+    "sl": 105075.14939166296,
+    "tp": 98895.3765208426,
+    "entryIdx": 6171,
+    "entryTime": 1750435200000,
+    "result": "WIN",
+    "exitIdx": 6183
+  },
+  {
+    "direction": "LONG",
+    "entry": 105343.5,
+    "sl": 102848.53663791553,
+    "tp": 111580.90840521116,
+    "entryIdx": 6190,
+    "entryTime": 1750708800000,
+    "result": "WIN",
+    "exitIdx": 6285
+  },
+  {
+    "direction": "LONG",
+    "entry": 118881.7,
+    "sl": 116692.82131735758,
+    "tp": 124353.89670660604,
+    "entryIdx": 6332,
+    "entryTime": 1752753600000,
+    "result": "LOSS",
+    "exitIdx": 6352
+  },
+  {
+    "direction": "LONG",
+    "entry": 118405.9,
+    "sl": 116516.7,
+    "tp": 123128.9,
+    "entryIdx": 6353,
+    "entryTime": 1753056000000,
+    "result": "LOSS",
+    "exitIdx": 6359
+  },
+  {
+    "direction": "LONG",
+    "entry": 117982.9,
+    "sl": 115963.84834547798,
+    "tp": 123030.52913630505,
+    "entryIdx": 6360,
+    "entryTime": 1753156800000,
+    "result": "LOSS",
+    "exitIdx": 6377
+  },
+  {
+    "direction": "LONG",
+    "entry": 118766.9,
+    "sl": 117315.40308895259,
+    "tp": 122395.6422776185,
+    "entryIdx": 6401,
+    "entryTime": 1753747200000,
+    "result": "LOSS",
+    "exitIdx": 6404
+  },
+  {
+    "direction": "LONG",
+    "entry": 114810,
+    "sl": 113301.11889181683,
+    "tp": 118582.20277045791,
+    "entryIdx": 6440,
+    "entryTime": 1754308800000,
+    "result": "LOSS",
+    "exitIdx": 6446
+  },
+  {
+    "direction": "SHORT",
+    "entry": 113624.6,
+    "sl": 115217.07443429554,
+    "tp": 109643.41391426117,
+    "entryIdx": 6447,
+    "entryTime": 1754409600000,
+    "result": "LOSS",
+    "exitIdx": 6452
+  },
+  {
+    "direction": "LONG",
+    "entry": 116507.7,
+    "sl": 114795.7,
+    "tp": 120787.7,
+    "entryIdx": 6457,
+    "entryTime": 1754553600000,
+    "result": "WIN",
+    "exitIdx": 6479
+  },
+  {
+    "direction": "LONG",
+    "entry": 119932.3,
+    "sl": 118203.16214321955,
+    "tp": 124255.14464195115,
+    "entryIdx": 6488,
+    "entryTime": 1755000000000,
+    "result": "WIN",
+    "exitIdx": 6497
+  },
+  {
+    "direction": "LONG",
+    "entry": 118305.8,
+    "sl": 116908.03489663194,
+    "tp": 121800.21275842015,
+    "entryIdx": 6517,
+    "entryTime": 1755417600000,
+    "result": "LOSS",
+    "exitIdx": 6521
+  },
+  {
+    "direction": "LONG",
+    "entry": 116360.2,
+    "sl": 111665.8,
+    "tp": 128096.19999999998,
+    "entryIdx": 6548,
+    "entryTime": 1755864000000,
+    "result": "LOSS",
+    "exitIdx": 6561
+  },
+  {
+    "direction": "SHORT",
+    "entry": 113496.5,
+    "sl": 115381.41418371827,
+    "tp": 108784.21454070433,
+    "entryIdx": 6562,
+    "entryTime": 1756065600000,
+    "result": "WIN",
+    "exitIdx": 6569
+  },
+  {
+    "direction": "SHORT",
+    "entry": 111240.8,
+    "sl": 113231.85391955457,
+    "tp": 106263.16520111357,
+    "entryIdx": 6580,
+    "entryTime": 1756324800000,
+    "result": "LOSS",
+    "exitIdx": 6582
+  },
+  {
+    "direction": "SHORT",
+    "entry": 110008,
+    "sl": 111927.34466435,
+    "tp": 105209.638339125,
+    "entryIdx": 6588,
+    "entryTime": 1756440000000,
+    "result": "LOSS",
+    "exitIdx": 6620
+  },
+  {
+    "direction": "SHORT",
+    "entry": 109500.2,
+    "sl": 111208.68587573842,
+    "tp": 105228.98531065394,
+    "entryIdx": 6626,
+    "entryTime": 1756987200000,
+    "result": "LOSS",
+    "exitIdx": 6628
+  },
+  {
+    "direction": "SHORT",
+    "entry": 110717.4,
+    "sl": 113383.7,
+    "tp": 104051.65,
+    "entryIdx": 6632,
+    "entryTime": 1757073600000,
+    "result": "LOSS",
+    "exitIdx": 6662
+  },
+  {
+    "direction": "LONG",
+    "entry": 115434.1,
+    "sl": 114387.18385466826,
+    "tp": 118051.3903633294,
+    "entryIdx": 6689,
+    "entryTime": 1757894400000,
+    "result": "LOSS",
+    "exitIdx": 6692
+  },
+  {
+    "direction": "LONG",
+    "entry": 115305.2,
+    "sl": 114123.32478975374,
+    "tp": 118259.88802561564,
+    "entryIdx": 6693,
+    "entryTime": 1757952000000,
+    "result": "LOSS",
+    "exitIdx": 6732
+  },
+  {
+    "direction": "SHORT",
+    "entry": 112545.5,
+    "sl": 113954.94620836961,
+    "tp": 109021.88447907599,
+    "entryIdx": 6749,
+    "entryTime": 1758758400000,
+    "result": "WIN",
+    "exitIdx": 6753
+  },
+  {
+    "direction": "LONG",
+    "entry": 122885.3,
+    "sl": 120908.42028809754,
+    "tp": 127827.49927975619,
+    "entryIdx": 6829,
+    "entryTime": 1759910400000,
+    "result": "LOSS",
+    "exitIdx": 6836
+  },
+  {
+    "direction": "SHORT",
+    "entry": 116654.4,
+    "sl": 119449.5,
+    "tp": 109666.64999999998,
+    "entryIdx": 6843,
+    "entryTime": 1760112000000,
+    "result": "WIN",
+    "exitIdx": 6844
+  },
+  {
+    "direction": "SHORT",
+    "entry": 114317.7,
+    "sl": 117251.99949444579,
+    "tp": 106981.95126388552,
+    "entryIdx": 6860,
+    "entryTime": 1760356800000,
+    "result": "WIN",
+    "exitIdx": 6882
+  },
+  {
+    "direction": "SHORT",
+    "entry": 109062.4,
+    "sl": 111161.97043520144,
+    "tp": 103813.47391199638,
+    "entryIdx": 6905,
+    "entryTime": 1761004800000,
+    "result": "LOSS",
+    "exitIdx": 6908
+  },
+  {
+    "direction": "SHORT",
+    "entry": 108300.5,
+    "sl": 111812.4,
+    "tp": 99520.75000000001,
+    "entryIdx": 6910,
+    "entryTime": 1761076800000,
+    "result": "LOSS",
+    "exitIdx": 6926
+  },
+  {
+    "direction": "SHORT",
+    "entry": 112892.3,
+    "sl": 114705.84326965362,
+    "tp": 108358.44182586596,
+    "entryIdx": 6952,
+    "entryTime": 1761681600000,
+    "result": "WIN",
+    "exitIdx": 6960
+  },
+  {
+    "direction": "SHORT",
+    "entry": 110118.4,
+    "sl": 111812.32211809844,
+    "tp": 105883.5947047539,
+    "entryIdx": 6980,
+    "entryTime": 1762084800000,
+    "result": "WIN",
+    "exitIdx": 6986
+  },
+  {
+    "direction": "SHORT",
+    "entry": 103462.9,
+    "sl": 105612.81913858901,
+    "tp": 98088.10215352745,
+    "entryIdx": 7034,
+    "entryTime": 1762862400000,
+    "result": "WIN",
+    "exitIdx": 7048
+  },
+  {
+    "direction": "SHORT",
+    "entry": 86917.4,
+    "sl": 89907.4,
+    "tp": 79442.4,
+    "entryIdx": 7089,
+    "entryTime": 1763654400000,
+    "result": "LOSS",
+    "exitIdx": 7125
+  },
+  {
+    "direction": "SHORT",
+    "entry": 90352.3,
+    "sl": 91804.90579447377,
+    "tp": 86720.78551381557,
+    "entryIdx": 7150,
+    "entryTime": 1764532800000,
+    "result": "WIN",
+    "exitIdx": 7151
+  },
+  {
+    "direction": "SHORT",
+    "entry": 86545.6,
+    "sl": 88322.77208809218,
+    "tp": 82102.66977976955,
+    "entryIdx": 7152,
+    "entryTime": 1764561600000,
+    "result": "LOSS",
+    "exitIdx": 7160
+  },
+  {
+    "direction": "SHORT",
+    "entry": 90447.7,
+    "sl": 92487.99591075332,
+    "tp": 85346.9602231167,
+    "entryIdx": 7178,
+    "entryTime": 1764936000000,
+    "result": "LOSS",
+    "exitIdx": 7202
+  },
+  {
+    "direction": "SHORT",
+    "entry": 89942.8,
+    "sl": 92672.2,
+    "tp": 83119.30000000002,
+    "entryIdx": 7220,
+    "entryTime": 1765540800000,
+    "result": "LOSS",
+    "exitIdx": 7361
+  },
+  {
+    "direction": "LONG",
+    "entry": 93763.3,
+    "sl": 92112,
+    "tp": 97891.55000000002,
+    "entryIdx": 7372,
+    "entryTime": 1767729600000,
+    "result": "LOSS",
+    "exitIdx": 7375
+  },
+  {
+    "direction": "SHORT",
+    "entry": 90329.6,
+    "sl": 92077.94080351488,
+    "tp": 85958.7479912128,
+    "entryIdx": 7389,
+    "entryTime": 1767974400000,
+    "result": "LOSS",
+    "exitIdx": 7403
+  },
+  {
+    "direction": "LONG",
+    "entry": 91406.7,
+    "sl": 90234.39573501938,
+    "tp": 94337.46066245154,
+    "entryIdx": 7404,
+    "entryTime": 1768190400000,
+    "result": "LOSS",
+    "exitIdx": 7406
+  },
+  {
+    "direction": "LONG",
+    "entry": 91864.9,
+    "sl": 90512.16081626734,
+    "tp": 95246.74795933164,
+    "entryIdx": 7407,
+    "entryTime": 1768233600000,
+    "result": "WIN",
+    "exitIdx": 7414
+  },
+  {
+    "direction": "LONG",
+    "entry": 95375.6,
+    "sl": 94368.53681898495,
+    "tp": 97893.25795253763,
+    "entryIdx": 7443,
+    "entryTime": 1768752000000,
+    "result": "LOSS",
+    "exitIdx": 7444
+  },
+  {
+    "direction": "SHORT",
+    "entry": 88011.5,
+    "sl": 89486.21049869276,
+    "tp": 84324.72375326812,
+    "entryIdx": 7491,
+    "entryTime": 1769443200000,
+    "result": "LOSS",
+    "exitIdx": 7498
+  },
+  {
+    "direction": "SHORT",
+    "entry": 88052.7,
+    "sl": 89680.00893004218,
+    "tp": 83984.42767489453,
+    "entryIdx": 7505,
+    "entryTime": 1769644800000,
+    "result": "WIN",
+    "exitIdx": 7509
+  },
+  {
+    "direction": "SHORT",
+    "entry": 68926.5,
+    "sl": 71709.61444454809,
+    "tp": 61968.71388862979,
+    "entryIdx": 7573,
+    "entryTime": 1770624000000,
+    "result": "LOSS",
+    "exitIdx": 7711
+  },
+  {
+    "direction": "SHORT",
+    "entry": 68495.6,
+    "sl": 70703.00563437144,
+    "tp": 62977.08591407141,
+    "entryIdx": 7724,
+    "entryTime": 1772798400000,
+    "result": "LOSS",
+    "exitIdx": 7747
+  },
+  {
+    "direction": "LONG",
+    "entry": 70644.4,
+    "sl": 68746.12225598282,
+    "tp": 75390.09436004295,
+    "entryIdx": 7755,
+    "entryTime": 1773244800000,
+    "result": "WIN",
+    "exitIdx": 7787
+  },
+  {
+    "direction": "SHORT",
+    "entry": 69867.2,
+    "sl": 71557.12234135873,
+    "tp": 65642.39414660318,
+    "entryIdx": 7808,
+    "entryTime": 1774008000000,
+    "result": "LOSS",
+    "exitIdx": 7826
+  },
+  {
+    "direction": "SHORT",
+    "entry": 69864.1,
+    "sl": 71622.20230665797,
+    "tp": 65468.84423335511,
+    "entryIdx": 7832,
+    "entryTime": 1774353600000,
+    "result": "LOSS",
+    "exitIdx": 7837
+  },
+  {
+    "direction": "SHORT",
+    "entry": 69274.8,
+    "sl": 70916.98891296363,
+    "tp": 65169.32771759095,
+    "entryIdx": 7843,
+    "entryTime": 1774512000000,
+    "result": "WIN",
+    "exitIdx": 7864
+  },
+  {
+    "direction": "SHORT",
+    "entry": 66542.9,
+    "sl": 67964.09246878534,
+    "tp": 62989.91882803662,
+    "entryIdx": 7869,
+    "entryTime": 1774886400000,
+    "result": "LOSS",
+    "exitIdx": 7871
+  },
+  {
+    "direction": "SHORT",
+    "entry": 66683.8,
+    "sl": 68202.61334732868,
+    "tp": 62886.766631678314,
+    "entryIdx": 7873,
+    "entryTime": 1774944000000,
+    "result": "LOSS",
+    "exitIdx": 7875
+  },
+  {
+    "direction": "SHORT",
+    "entry": 66581.2,
+    "sl": 68666,
+    "tp": 61369.19999999999,
+    "entryIdx": 7883,
+    "entryTime": 1775088000000,
+    "result": "LOSS",
+    "exitIdx": 7906
+  },
+  {
+    "direction": "LONG",
+    "entry": 69129.6,
+    "sl": 68041.8145336236,
+    "tp": 71849.063665941,
+    "entryIdx": 7907,
+    "entryTime": 1775433600000,
+    "result": "LOSS",
+    "exitIdx": 7916
+  },
+  {
+    "direction": "LONG",
+    "entry": 71927.5,
+    "sl": 69008.4,
+    "tp": 79225.25000000001,
+    "entryIdx": 7918,
+    "entryTime": 1775592000000,
+    "result": "WIN",
+    "exitIdx": 8006
+  },
+  {
+    "direction": "LONG",
+    "entry": 78045.2,
+    "sl": 76563.03860140276,
+    "tp": 81750.60349649309,
+    "entryIdx": 8018,
+    "entryTime": 1777032000000,
+    "result": "LOSS",
+    "exitIdx": 8036
+  },
+  {
+    "direction": "LONG",
+    "entry": 79703.1,
+    "sl": 78582.41756265138,
+    "tp": 82504.80609337159,
+    "entryIdx": 8076,
+    "entryTime": 1777867200000,
+    "result": "LOSS",
+    "exitIdx": 8077
+  },
+  {
+    "direction": "LONG",
+    "entry": 80030.6,
+    "sl": 78485.3,
+    "tp": 83893.85,
+    "entryIdx": 8078,
+    "entryTime": 1777896000000,
+    "result": "LOSS",
+    "exitIdx": 8148
+  },
+  {
+    "direction": "SHORT",
+    "entry": 77193,
+    "sl": 78298.6030907136,
+    "tp": 74428.99227321599,
+    "entryIdx": 8179,
+    "entryTime": 1779350400000,
+    "result": "WIN",
+    "exitIdx": 8190
+  },
+  {
+    "direction": "SHORT",
+    "entry": 76372.5,
+    "sl": 77564.33736089399,
+    "tp": 73392.90659776505,
+    "entryIdx": 8198,
+    "entryTime": 1779624000000,
+    "result": "LOSS",
+    "exitIdx": 8202
+  },
+  {
+    "direction": "SHORT",
+    "entry": 76662,
+    "sl": 77730.88186155823,
+    "tp": 73989.79534610444,
+    "entryIdx": 8207,
+    "entryTime": 1779753600000,
+    "result": "LOSS",
+    "exitIdx": 8210
+  },
+  {
+    "direction": "SHORT",
+    "entry": 76054,
+    "sl": 77268.40282819566,
+    "tp": 73017.99292951086,
+    "entryIdx": 8211,
+    "entryTime": 1779811200000,
+    "result": "WIN",
+    "exitIdx": 8220
+  },
+  {
+    "direction": "SHORT",
+    "entry": 73946.9,
+    "sl": 74877.26584421728,
+    "tp": 71620.98538945676,
+    "entryIdx": 8239,
+    "entryTime": 1780214400000,
+    "result": "WIN",
+    "exitIdx": 8246
+  },
+  {
+    "direction": "SHORT",
+    "entry": 62713.3,
+    "sl": 64453.73563756112,
+    "tp": 58362.21090609721,
+    "entryIdx": 8293,
+    "entryTime": 1780992000000,
+    "result": "LOSS",
+    "exitIdx": 8320
+  },
+  {
+    "direction": "SHORT",
+    "entry": 64812.7,
+    "sl": 65996.97031821773,
+    "tp": 61852.02420445564,
+    "entryIdx": 8341,
+    "entryTime": 1781683200000,
+    "result": "LOSS",
+    "exitIdx": 8343
+  },
+  {
+    "direction": "SHORT",
+    "entry": 63309.3,
+    "sl": 64310.39569887124,
+    "tp": 60806.56075282192,
+    "entryIdx": 8368,
+    "entryTime": 1782072000000,
+    "result": "LOSS",
+    "exitIdx": 8369
+  },
+  {
+    "direction": "SHORT",
+    "entry": 62889.8,
+    "sl": 64093,
+    "tp": 59881.80000000001,
+    "entryIdx": 8376,
+    "entryTime": 1782187200000,
+    "result": "WIN",
+    "exitIdx": 8385
+  },
+  {
+    "direction": "SHORT",
+    "entry": 60170.5,
+    "sl": 61651.786680997146,
+    "tp": 56467.28329750713,
+    "entryIdx": 8403,
+    "entryTime": 1782576000000,
+    "result": "LOSS",
+    "exitIdx": 8432
+  },
+  {
+    "direction": "SHORT",
+    "entry": 62484.4,
+    "sl": 63513.82436419642,
+    "tp": 59910.839089508954,
+    "entryIdx": 8455,
+    "entryTime": 1783324800000,
+    "result": "LOSS",
+    "exitIdx": 8456
+  },
+  {
+    "direction": "LONG",
+    "entry": 63887.3,
+    "sl": 62961.930743302844,
+    "tp": 66200.7231417429,
+    "entryIdx": 8490,
+    "entryTime": 1783828800000,
+    "result": "LOSS",
+    "exitIdx": 8495
+  },
+  {
+    "direction": "SHORT",
+    "entry": 62983.5,
+    "sl": 63934.40338032106,
+    "tp": 60606.24154919734,
+    "entryIdx": 8496,
+    "entryTime": 1783915200000,
+    "result": "LOSS",
+    "exitIdx": 8504
+  },
+  {
+    "direction": "LONG",
+    "entry": 64706.2,
+    "sl": 63668.848471012476,
+    "tp": 67299.57882246881,
+    "entryIdx": 8516,
+    "entryTime": 1784203200000,
+    "result": "LOSS",
+    "exitIdx": 8519
+  },
+  {
+    "direction": "LONG",
+    "entry": 64157.4,
+    "sl": 63043.53109529829,
+    "tp": 66942.07226175428,
+    "entryIdx": 8523,
+    "entryTime": 1784304000000,
+    "result": "WIN",
+    "exitIdx": 8546
+  },
+  {
+    "direction": "LONG",
+    "entry": 65918.4,
+    "sl": 64997.74377441203,
+    "tp": 68220.0405639699,
+    "entryIdx": 8553,
+    "entryTime": 1784736000000,
+    "result": "LOSS",
+    "exitIdx": 8558
+  }
+]
