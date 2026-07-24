@@ -11,7 +11,7 @@ const TIMEFRAME_MS = {
 async function fetchFullHistory(
   symbol = "BTC/USDT",
   timeframe = "4h",
-  years = 4,
+  years = 8,
 ) {
   const exchange = new ccxt.bybit();
   const msPerCandle = TIMEFRAME_MS[timeframe];
