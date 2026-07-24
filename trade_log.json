@@ -2688,5 +2688,15 @@
     "entryTime": 1784736000000,
     "result": "LOSS",
     "exitIdx": 10865
+  },
+  {
+    "direction": "LONG",
+    "entry": 65505.3,
+    "sl": 64642.03162151922,
+    "tp": 67663.47094620195,
+    "entryIdx": 10869,
+    "entryTime": 1784865600000,
+    "result": "LOSS",
+    "exitIdx": 10871
   }
 ]

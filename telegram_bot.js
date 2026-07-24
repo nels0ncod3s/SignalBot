@@ -1,6 +1,6 @@
-// On-demand Telegram bot: reply with the current BTC/USDT 4H signal when asked,
-// instead of pushing alerts on a schedule. Long-polls Telegram (no public webhook needed),
-// so it just needs to run continuously somewhere with outbound internet access.
+// On-demand + auto-alert Telegram bot for the BTC/USDT 30m signal. Long-polls Telegram
+// (no public webhook needed), so it just needs to run continuously somewhere with
+// outbound internet access.
 const ccxt = require("ccxt");
 const fs = require("fs");
 const http = require("http");
@@ -28,7 +28,7 @@ function loadConfig() {
 const config = loadConfig();
 
 const SYMBOL = "BTC/USDT";
-const TIMEFRAME = "4h";
+const TIMEFRAME = "30m";
 const TELEGRAM_API = `https://api.telegram.org/bot${config.telegramBotToken}`;
 const ALLOWED_CHAT_ID = String(config.telegramChatId);
 
@@ -85,7 +85,7 @@ async function getCurrentSignal() {
   }
 
   const signal = evaluateEntry(curr, prev);
-  const trend = curr.close > curr.ema200 ? "UPTREND" : curr.close < curr.ema200 ? "DOWNTREND" : "FLAT";
+  const trend = curr.close > curr.trendEma ? "UPTREND" : curr.close < curr.trendEma ? "DOWNTREND" : "FLAT";
 
   return { ready: true, signal, curr, trend };
 }
@@ -101,7 +101,7 @@ function formatSignalMessage({ ready, signal, curr, trend }) {
     const emoji = signal.direction === "LONG" ? "🟢" : "🔴";
     return (
       `${emoji} *Signal: ${signal.direction}*\n` +
-      `${SYMBOL} (4H)\n` +
+      `${SYMBOL} (30m)\n` +
       `Entry: ${signal.entry.toFixed(2)}\n` +
       `Stop Loss: ${signal.sl.toFixed(2)}\n` +
       `Take Profit: ${signal.tp.toFixed(2)}\n` +
@@ -111,10 +111,10 @@ function formatSignalMessage({ ready, signal, curr, trend }) {
 
   return (
     `⚪ *No active entry signal right now*\n` +
-    `${SYMBOL} (4H)\n` +
+    `${SYMBOL} (30m)\n` +
     `Trend: ${trend}\n` +
     `Price: ${curr.close.toFixed(2)}\n` +
-    `EMA200: ${curr.ema200.toFixed(2)} | EMA20: ${curr.ema20.toFixed(2)}\n` +
+    `EMA50: ${curr.trendEma.toFixed(2)} | EMA8: ${curr.pullbackEma.toFixed(2)}\n` +
     `As of candle: ${asOf}`
   );
 }
@@ -130,12 +130,12 @@ async function handleSignalRequest(chatId) {
 }
 
 // ---------- Auto-alert loop ----------
-// Real signals only exist on a freshly-closed 4H candle, so polling every hour is plenty
-// responsive without hammering the exchange API. State is persisted to disk (not just in
-// memory) so a restart doesn't miss a candle that closed while the process was down, and
-// doesn't re-alert for a candle it already sent.
+// Real signals only exist on a freshly-closed 30m candle, so polling every 15 minutes
+// catches a new candle promptly (2-4 checks per candle) without hammering the exchange
+// API. State is persisted to disk (not just in memory) so a restart doesn't miss a candle
+// that closed while the process was down, and doesn't re-alert for a candle it already sent.
 const ALERT_STATE_PATH = path.join(__dirname, "alert_state.json");
-const CHECK_INTERVAL_MS = 60 * 60 * 1000;
+const CHECK_INTERVAL_MS = 15 * 60 * 1000;
 
 function loadAlertState() {
   try {

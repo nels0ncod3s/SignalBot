@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { computeIndicators, indicatorsReady, evaluateEntry } = require("./strategy");
+const { computeIndicators, indicatorsReady, evaluateEntry, REWARD_R_MULT } = require("./strategy");
 
 // ---------- 1. Load CSV ----------
 function loadCandles(path) {
@@ -14,7 +14,9 @@ function loadCandles(path) {
 }
 
 // ---------- 2. Load data + compute indicators ----------
-const candles = loadCandles('btc_4h_history.csv');
+// Usage: node backtest.js [csv_file]  (defaults to btc_4h_history.csv)
+const csvFile = process.argv[2] || "btc_4h_history.csv";
+const candles = loadCandles(csvFile);
 const withIndicators = computeIndicators(candles);
 
 // trim candles where indicators aren't ready yet (nulls)
@@ -73,7 +75,7 @@ function scoreTrades(tradeList, label) {
   const losses = tradeList.filter((t) => t.result === "LOSS").length;
   const total = wins + losses;
   const winRate = total ? wins / total : 0;
-  const expectancy = winRate * 2.5 - (1 - winRate) * 1.0;
+  const expectancy = winRate * REWARD_R_MULT - (1 - winRate) * 1.0;
 
   console.log(`\n--- ${label} ---`);
   console.log(`Total trades: ${total}`);
@@ -106,7 +108,7 @@ const feeDragPerTradeR = 0.05; // rough estimate, ~5% of a full R unit per trade
 const feeAdjustedExpectancy =
   completedTrades.length > 0
     ? completedTrades.reduce(
-        (acc, t) => acc + (t.result === "WIN" ? 2.5 : -1.0),
+        (acc, t) => acc + (t.result === "WIN" ? REWARD_R_MULT : -1.0),
         0,
       ) /
         completedTrades.length -
@@ -120,6 +122,10 @@ console.log(
   }${feeAdjustedExpectancy.toFixed(2)}R per trade`,
 );
 
-// Save full trade log for inspection
-fs.writeFileSync("trade_log.json", JSON.stringify(completedTrades, null, 2));
-console.log(`\nFull trade log saved to trade_log.json`);
+// Save full trade log for inspection. Keep the default run's output filename
+// unchanged (trade_log.json) so analyze_by_year.js/analyze_recent.js keep working;
+// give other timeframes their own file so they don't clobber it.
+const tfLabel = csvFile.match(/^btc_(.+)_history\.csv$/)?.[1] || csvFile.replace(/\.csv$/, "");
+const tradeLogFile = process.argv[2] ? `trade_log_${tfLabel}.json` : "trade_log.json";
+fs.writeFileSync(tradeLogFile, JSON.stringify(completedTrades, null, 2));
+console.log(`\nFull trade log saved to ${tradeLogFile}`);

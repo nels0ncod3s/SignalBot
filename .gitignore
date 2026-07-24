@@ -1,9 +1,7 @@
 node_modules
 
 trade_log.json
-
-open_trades.json
-closed_trades.json
+trade_log_*.json
 
 # Output
 .output
