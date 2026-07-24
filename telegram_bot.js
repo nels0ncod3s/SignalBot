@@ -5,7 +5,7 @@ const ccxt = require("ccxt");
 const fs = require("fs");
 const http = require("http");
 const path = require("path");
-const { computeIndicators, evaluateEntry } = require("./strategy");
+const { computeIndicators, evaluateEntry, indicatorsReady } = require("./strategy");
 
 // Env vars take priority since most hosting platforms (Fly, Railway, pxxl.app, etc.)
 // inject secrets that way rather than mounting a config.json file.
@@ -80,7 +80,7 @@ async function fetchCurrentCandles() {
 
 async function getCurrentSignal() {
   const { curr, prev } = await fetchCurrentCandles();
-  if (!curr || !prev || !curr.ema200 || !prev.ema20) {
+  if (!curr || !prev || !indicatorsReady(curr) || !indicatorsReady(prev)) {
     return { ready: false };
   }
 
