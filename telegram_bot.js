@@ -3,11 +3,29 @@
 // so it just needs to run continuously somewhere with outbound internet access.
 const ccxt = require("ccxt");
 const fs = require("fs");
+const http = require("http");
 const path = require("path");
 const { computeIndicators, evaluateEntry } = require("./strategy");
 
-const CONFIG_PATH = path.join(__dirname, "config.json");
-const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
+// Env vars take priority since most hosting platforms (Fly, Railway, pxxl.app, etc.)
+// inject secrets that way rather than mounting a config.json file.
+function loadConfig() {
+  if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
+    return {
+      telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
+      telegramChatId: process.env.TELEGRAM_CHAT_ID,
+    };
+  }
+  const configPath = path.join(__dirname, "config.json");
+  if (fs.existsSync(configPath)) {
+    return JSON.parse(fs.readFileSync(configPath, "utf-8"));
+  }
+  throw new Error(
+    "Missing config: set TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID env vars, or provide config.json (see config.example.json).",
+  );
+}
+
+const config = loadConfig();
 
 const SYMBOL = "BTC/USDT";
 const TIMEFRAME = "4h";
@@ -162,4 +180,19 @@ async function pollLoop() {
   }
 }
 
+// Some hosting platforms (Render, Railway web services, pxxl.app, etc.) expect the
+// process to bind to a port for health checks / to consider the deploy "up", even
+// though this bot's real work happens over Telegram long-polling, not HTTP. Harmless
+// no-op on hosts that don't check it (Fly.io machines, a plain VPS).
+function startHealthServer() {
+  const port = process.env.PORT || 3000;
+  http
+    .createServer((req, res) => {
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end("SignalBot is running.");
+    })
+    .listen(port, () => console.log(`Health check server listening on :${port}`));
+}
+
+startHealthServer();
 pollLoop();
