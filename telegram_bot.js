@@ -58,7 +58,7 @@ async function sendMessage(chatId, text, extra = {}) {
 }
 
 // ---------- Signal lookup ----------
-async function getCurrentSignal() {
+async function fetchCurrentCandles() {
   const exchange = new ccxt.bybit();
   const bars = await exchange.fetchOHLCV(SYMBOL, TIMEFRAME, undefined, 300);
   const candles = bars.map(([timestamp, open, high, low, close, volume]) => ({
@@ -75,7 +75,11 @@ async function getCurrentSignal() {
   const closedCandles = withIndicators.slice(0, withIndicators.length - 1);
   const curr = closedCandles[closedCandles.length - 1];
   const prev = closedCandles[closedCandles.length - 2];
+  return { curr, prev };
+}
 
+async function getCurrentSignal() {
+  const { curr, prev } = await fetchCurrentCandles();
   if (!curr || !prev || !curr.ema200 || !prev.ema20) {
     return { ready: false };
   }
@@ -125,6 +129,47 @@ async function handleSignalRequest(chatId) {
   }
 }
 
+// ---------- Auto-alert loop ----------
+// Real signals only exist on a freshly-closed 4H candle, so polling every hour is plenty
+// responsive without hammering the exchange API. State is persisted to disk (not just in
+// memory) so a restart doesn't miss a candle that closed while the process was down, and
+// doesn't re-alert for a candle it already sent.
+const ALERT_STATE_PATH = path.join(__dirname, "alert_state.json");
+const CHECK_INTERVAL_MS = 60 * 60 * 1000;
+
+function loadAlertState() {
+  try {
+    return JSON.parse(fs.readFileSync(ALERT_STATE_PATH, "utf-8"));
+  } catch {
+    return { lastAlertedCandleTime: null };
+  }
+}
+
+function saveAlertState(state) {
+  fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state));
+}
+
+async function checkForAutoAlert() {
+  try {
+    const result = await getCurrentSignal();
+    if (!result.ready || !result.signal) return;
+
+    const state = loadAlertState();
+    if (state.lastAlertedCandleTime === result.curr.timestamp) return;
+
+    await sendMessage(ALLOWED_CHAT_ID, formatSignalMessage(result));
+    saveAlertState({ lastAlertedCandleTime: result.curr.timestamp });
+    console.log(`Auto-alert sent for candle ${new Date(result.curr.timestamp).toISOString()}`);
+  } catch (err) {
+    console.error("Auto-alert check failed:", err.message);
+  }
+}
+
+function startAutoAlertLoop() {
+  checkForAutoAlert();
+  setInterval(checkForAutoAlert, CHECK_INTERVAL_MS);
+}
+
 // ---------- Update handling ----------
 async function handleUpdate(update) {
   const message = update.message;
@@ -141,7 +186,9 @@ async function handleUpdate(update) {
   if (text === "/start") {
     await sendMessage(
       chatId,
-      "👋 BTC signal bot ready. Tap the button below or send /signal anytime to get the current 4H signal.",
+      "👋 BTC signal bot ready.\n" +
+        "📊 Get Signal / /signal — current real strategy signal.\n" +
+        "🔔 Also watching in the background — you'll get a message here automatically whenever a real signal fires, no need to ask.",
       { reply_markup: SIGNAL_KEYBOARD },
     );
   } else if (text === "/signal" || text === "📊 Get Signal") {
@@ -195,4 +242,5 @@ function startHealthServer() {
 }
 
 startHealthServer();
+startAutoAlertLoop();
 pollLoop();
