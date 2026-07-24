@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { computeIndicators, indicatorsReady, evaluateEntry } = require("./strategy");
 
 // ---------- 1. Load CSV ----------
 function loadCandles(path) {
@@ -12,100 +13,12 @@ function loadCandles(path) {
   });
 }
 
-// ---------- 2. Indicator math ----------
-
-// Exponential Moving Average
-function ema(values, period) {
-  const k = 2 / (period + 1);
-  const result = new Array(values.length).fill(null);
-  let prevEma = null;
-
-  for (let i = 0; i < values.length; i++) {
-    if (i < period - 1) continue; // not enough data yet
-    if (prevEma === null) {
-      // seed with a simple average of the first `period` values
-      const seed =
-        values.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) / period;
-      prevEma = seed;
-      result[i] = seed;
-    } else {
-      prevEma = values[i] * k + prevEma * (1 - k);
-      result[i] = prevEma;
-    }
-  }
-  return result;
-}
-
-// Simple Moving Average
-function sma(values, period) {
-  const result = new Array(values.length).fill(null);
-  for (let i = period - 1; i < values.length; i++) {
-    const slice = values.slice(i - period + 1, i + 1);
-    result[i] = slice.reduce((a, b) => a + b, 0) / period;
-  }
-  return result;
-}
-
-// Average True Range
-function atr(candles, period) {
-  const trValues = candles.map((c, i) => {
-    if (i === 0) return c.high - c.low;
-    const prevClose = candles[i - 1].close;
-    return Math.max(
-      c.high - c.low,
-      Math.abs(c.high - prevClose),
-      Math.abs(c.low - prevClose),
-    );
-  });
-
-  // ATR is typically a smoothed (Wilder's) moving average of TR, not a plain SMA.
-  // Wilder's smoothing: first value = SMA of first `period` TRs, then recursive smoothing.
-  const result = new Array(candles.length).fill(null);
-  let prevAtr = null;
-
-  for (let i = 0; i < trValues.length; i++) {
-    if (i < period - 1) continue;
-    if (prevAtr === null) {
-      const seed =
-        trValues.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) /
-        period;
-      prevAtr = seed;
-      result[i] = seed;
-    } else {
-      prevAtr = (prevAtr * (period - 1) + trValues[i]) / period;
-      result[i] = prevAtr;
-    }
-  }
-  return result;
-}
-
-// ---------- 3. Load data + compute indicators ----------
+// ---------- 2. Load data + compute indicators ----------
 const candles = loadCandles('btc_4h_history.csv');
-
-const closes = candles.map((c) => c.close);
-const volumes = candles.map((c) => c.volume);
-
-const ema200 = ema(closes, 200);
-const ema20 = ema(closes, 20);
-const atr14 = atr(candles, 14);
-const volSma10 = sma(volumes, 10);
-
-// attach indicators back onto each candle
-for (let i = 0; i < candles.length; i++) {
-  candles[i].ema200 = ema200[i];
-  candles[i].ema20 = ema20[i];
-  candles[i].atr = atr14[i];
-  candles[i].volSma = volSma10[i];
-}
+const withIndicators = computeIndicators(candles);
 
 // trim candles where indicators aren't ready yet (nulls)
-const data = candles.filter(
-  (c) =>
-    c.ema200 !== null &&
-    c.ema20 !== null &&
-    c.atr !== null &&
-    c.volSma !== null,
-);
+const data = withIndicators.filter(indicatorsReady);
 
 console.log(`Usable candles after indicator warm-up: ${data.length}`);
 
@@ -119,35 +32,9 @@ for (let i = 1; i < data.length; i++) {
   const prev = data[i - 1];
 
   if (!inTrade) {
-    const isUptrend = curr.close > curr.ema200;
-    const isDowntrend = curr.close < curr.ema200;
-    const longPullback = prev.low <= prev.ema20 && curr.close > curr.ema20;
-    const shortPullback = prev.high >= prev.ema20 && curr.close < curr.ema20;
-    const volOk = curr.volume > curr.volSma;
-
-    if (isUptrend && longPullback && volOk) {
-      const entry = curr.close;
-      const risk = Math.max(1.5 * curr.atr, entry - curr.low);
-      trade = {
-        direction: "LONG",
-        entry,
-        sl: entry - risk,
-        tp: entry + 2.5 * risk,
-        entryIdx: i,
-        entryTime: curr.timestamp,
-      };
-      inTrade = true;
-    } else if (isDowntrend && shortPullback && volOk) {
-      const entry = curr.close;
-      const risk = Math.max(1.5 * curr.atr, curr.high - entry);
-      trade = {
-        direction: "SHORT",
-        entry,
-        sl: entry + risk,
-        tp: entry - 2.5 * risk,
-        entryIdx: i,
-        entryTime: curr.timestamp,
-      };
+    const signal = evaluateEntry(curr, prev);
+    if (signal) {
+      trade = { ...signal, entryIdx: i, entryTime: curr.timestamp };
       inTrade = true;
     }
   } else {

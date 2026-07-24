@@ -1,6 +1,7 @@
 const ccxt = require("ccxt");
 const fs = require("fs");
 const path = require("path");
+const { computeIndicators, evaluateEntry } = require("./strategy");
 
 const CONFIG_PATH = path.join(__dirname, "config.json");
 const OPEN_TRADES_PATH = path.join(__dirname, "open_trades.json");
@@ -32,63 +33,6 @@ async function sendTelegram(message) {
   }
 }
 
-// ---------- Indicator math (same as backtest.js) ----------
-function ema(values, period) {
-  const k = 2 / (period + 1);
-  const result = new Array(values.length).fill(null);
-  let prevEma = null;
-  for (let i = 0; i < values.length; i++) {
-    if (i < period - 1) continue;
-    if (prevEma === null) {
-      const seed =
-        values.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) / period;
-      prevEma = seed;
-      result[i] = seed;
-    } else {
-      prevEma = values[i] * k + prevEma * (1 - k);
-      result[i] = prevEma;
-    }
-  }
-  return result;
-}
-
-function sma(values, period) {
-  const result = new Array(values.length).fill(null);
-  for (let i = period - 1; i < values.length; i++) {
-    const slice = values.slice(i - period + 1, i + 1);
-    result[i] = slice.reduce((a, b) => a + b, 0) / period;
-  }
-  return result;
-}
-
-function atr(candles, period) {
-  const trValues = candles.map((c, i) => {
-    if (i === 0) return c.high - c.low;
-    const prevClose = candles[i - 1].close;
-    return Math.max(
-      c.high - c.low,
-      Math.abs(c.high - prevClose),
-      Math.abs(c.low - prevClose),
-    );
-  });
-  const result = new Array(candles.length).fill(null);
-  let prevAtr = null;
-  for (let i = 0; i < trValues.length; i++) {
-    if (i < period - 1) continue;
-    if (prevAtr === null) {
-      const seed =
-        trValues.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) /
-        period;
-      prevAtr = seed;
-      result[i] = seed;
-    } else {
-      prevAtr = (prevAtr * (period - 1) + trValues[i]) / period;
-      result[i] = prevAtr;
-    }
-  }
-  return result;
-}
-
 // ---------- Load/save helpers ----------
 function loadJson(filePath, fallback) {
   if (!fs.existsSync(filePath)) return fallback;
@@ -115,23 +59,11 @@ async function run() {
     volume,
   }));
 
-  const closes = candles.map((c) => c.close);
-  const volumes = candles.map((c) => c.volume);
-  const ema200 = ema(closes, 200);
-  const ema20 = ema(closes, 20);
-  const atr14 = atr(candles, 14);
-  const volSma10 = sma(volumes, 10);
-
-  for (let i = 0; i < candles.length; i++) {
-    candles[i].ema200 = ema200[i];
-    candles[i].ema20 = ema20[i];
-    candles[i].atr = atr14[i];
-    candles[i].volSma = volSma10[i];
-  }
+  const withIndicators = computeIndicators(candles);
 
   // drop the last candle if it's still forming (in-progress), keep only fully closed candles
   // ccxt/bybit typically includes the current forming candle last - safer to use the second-to-last as "current closed"
-  const closedCandles = candles.slice(0, candles.length - 1);
+  const closedCandles = withIndicators.slice(0, withIndicators.length - 1);
   const curr = closedCandles[closedCandles.length - 1];
   const prev = closedCandles[closedCandles.length - 2];
 
@@ -175,35 +107,8 @@ async function run() {
 
   // ---------- 2. Check for a new signal (only if no trade currently open) ----------
   if (stillOpen.length === 0) {
-    const isUptrend = curr.close > curr.ema200;
-    const isDowntrend = curr.close < curr.ema200;
-    const longPullback = prev.low <= prev.ema20 && curr.close > curr.ema20;
-    const shortPullback = prev.high >= prev.ema20 && curr.close < curr.ema20;
-    const volOk = curr.volume > curr.volSma;
-
-    let newTrade = null;
-
-    if (isUptrend && longPullback && volOk) {
-      const entry = curr.close;
-      const risk = Math.max(1.5 * curr.atr, entry - curr.low);
-      newTrade = {
-        direction: "LONG",
-        entry,
-        sl: entry - risk,
-        tp: entry + 2.5 * risk,
-        entryTime: curr.timestamp,
-      };
-    } else if (isDowntrend && shortPullback && volOk) {
-      const entry = curr.close;
-      const risk = Math.max(1.5 * curr.atr, curr.high - entry);
-      newTrade = {
-        direction: "SHORT",
-        entry,
-        sl: entry + risk,
-        tp: entry - 2.5 * risk,
-        entryTime: curr.timestamp,
-      };
-    }
+    const signal = evaluateEntry(curr, prev);
+    const newTrade = signal ? { ...signal, entryTime: curr.timestamp } : null;
 
     if (newTrade) {
       stillOpen.push(newTrade);
