@@ -238,7 +238,7 @@ function startHealthServer() {
       res.writeHead(200, { "Content-Type": "text/plain" });
       res.end("SignalBot is running.");
     })
-    .listen(port, () => console.log(`Health check server listening on :${port}`));
+    .listen(port, "0.0.0.0", () => console.log(`Health check server listening on :${port}`));
 }
 
 startHealthServer();
