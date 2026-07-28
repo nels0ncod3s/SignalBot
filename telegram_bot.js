@@ -37,6 +37,11 @@ const SIGNAL_KEYBOARD = {
   resize_keyboard: true,
 };
 
+// Created once and reused: a fresh ccxt instance reloads Bybit's entire market list on its
+// first API call, which is slow. Reusing one instance means that only happens on cold start,
+// not on every /signal tap or 15-minute auto-check.
+const exchange = new ccxt.bybit();
+
 async function telegramCall(method, body) {
   const res = await fetch(`${TELEGRAM_API}/${method}`, {
     method: "POST",
@@ -59,7 +64,6 @@ async function sendMessage(chatId, text, extra = {}) {
 
 // ---------- Signal lookup ----------
 async function fetchCurrentCandles() {
-  const exchange = new ccxt.bybit();
   const bars = await exchange.fetchOHLCV(SYMBOL, TIMEFRAME, undefined, 300);
   const candles = bars.map(([timestamp, open, high, low, close, volume]) => ({
     timestamp,
