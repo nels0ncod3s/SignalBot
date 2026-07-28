@@ -14,8 +14,8 @@ function loadCandles(path) {
 }
 
 // ---------- 2. Load data + compute indicators ----------
-// Usage: node backtest.js [csv_file]  (defaults to btc_4h_history.csv)
-const csvFile = process.argv[2] || "btc_4h_history.csv";
+// Usage: node backtest.js [csv_file]  (defaults to btc_30m_history.csv, the live strategy's timeframe)
+const csvFile = process.argv[2] || "btc_30m_history.csv";
 const candles = loadCandles(csvFile);
 const withIndicators = computeIndicators(candles);
 

@@ -68,6 +68,12 @@ const VOL_SMA_PERIOD = 10;
 const RISK_ATR_MULT = 2.0;
 const REWARD_R_MULT = 3.0;
 
+// Added after a separate threshold sweep (not part of the grid search above): requiring
+// volume to clear 2x its 10-period average, instead of just >1x, roughly doubled
+// expectancy on the same dataset (+0.085R -> +0.189R) and held up in-sample vs
+// out-of-sample (+0.178R vs +0.215R). Re-validate periodically, same as the params above.
+const VOL_MULT = 2.0;
+
 // Attaches trendEma/pullbackEma/atr/volSma onto each candle. Returns a new array.
 function computeIndicators(candles) {
   const closes = candles.map((c) => c.close);
@@ -104,7 +110,7 @@ function evaluateEntry(curr, prev) {
   const isDowntrend = curr.close < curr.trendEma;
   const longPullback = prev.low <= prev.pullbackEma && curr.close > curr.pullbackEma;
   const shortPullback = prev.high >= prev.pullbackEma && curr.close < curr.pullbackEma;
-  const volOk = curr.volume > curr.volSma;
+  const volOk = curr.volume > curr.volSma * VOL_MULT;
 
   if (isUptrend && longPullback && volOk) {
     const entry = curr.close;
