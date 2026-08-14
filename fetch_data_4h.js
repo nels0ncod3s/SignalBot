@@ -54,18 +54,20 @@ async function fetchFullHistory(
   const header = "timestamp,open,high,low,close,volume\n";
   const rows = deduped.map((bar) => bar.join(",")).join("\n");
 
-  const outFile = `btc_${timeframe}_history.csv`;
+  const base = symbol.split("/")[0].toLowerCase();
+  const outFile = `${base}_${timeframe}_history.csv`;
   fs.writeFileSync(outFile, header + rows);
   console.log(`Saved ${deduped.length} candles to ${outFile}`);
 
   return deduped;
 }
 
-// Usage: node fetch_data_4h.js [timeframe] [years]
+// Usage: node fetch_data_4h.js [timeframe] [years] [symbol]
 // e.g.:  node fetch_data_4h.js 30m 2
-const [, , timeframeArg, yearsArg] = process.argv;
+//        node fetch_data_4h.js 30m 3 ETH/USDT
+const [, , timeframeArg, yearsArg, symbolArg] = process.argv;
 const args = [
-  "BTC/USDT",
+  symbolArg || "BTC/USDT",
   ...(timeframeArg ? [timeframeArg] : []),
   ...(yearsArg ? [Number(yearsArg)] : []),
 ];
