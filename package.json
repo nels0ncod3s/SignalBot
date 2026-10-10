@@ -1,20 +1,21 @@
 {
   "name": "signal-bot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.1.0",
+  "description": "BTC/USDT and XAU/USD research signals with Telegram alerts",
   "main": "telegram_bot.js",
   "scripts": {
     "start": "node telegram_bot.js",
     "bot": "node telegram_bot.js",
     "backtest": "node backtest.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test",
+    "history": "node fetch_data_4h.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
   "dependencies": {
     "ccxt": "^4.5.68"

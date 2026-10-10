@@ -1,77 +1,28 @@
-const ccxt = require("ccxt");
-const fs = require("fs");
-
-// map timeframe string -> milliseconds per candle (needed to fix pagination correctly)
-const TIMEFRAME_MS = {
-  "5m": 5 * 60 * 1000,
-  "15m": 15 * 60 * 1000,
-  "30m": 30 * 60 * 1000,
-  "1h": 60 * 60 * 1000,
-  "4h": 4 * 60 * 60 * 1000,
-  "1d": 24 * 60 * 60 * 1000,
-};
-
-async function fetchFullHistory(
-  symbol = "BTC/USDT",
-  timeframe = "4h",
-  years = 8,
-) {
-  const exchange = new ccxt.bybit();
-  const msPerCandle = TIMEFRAME_MS[timeframe];
-  if (!msPerCandle) throw new Error(`Unsupported timeframe: ${timeframe}`);
-
-  const totalCandles = Math.ceil(
-    (years * 365 * 24 * 60 * 60 * 1000) / msPerCandle,
-  );
-  let since = exchange.milliseconds() - totalCandles * msPerCandle;
-
-  let allBars = [];
-
-  while (since < exchange.milliseconds()) {
-    const bars = await exchange.fetchOHLCV(symbol, timeframe, since, 1000);
-    if (!bars || bars.length === 0) break;
-
-    allBars = allBars.concat(bars);
-    since = bars[bars.length - 1][0] + msPerCandle;
-
-    console.log(
-      `Fetched up to ${new Date(since).toISOString()} — total so far: ${allBars.length}`,
-    );
-
-    // respect rate limits
-    await new Promise((resolve) => setTimeout(resolve, exchange.rateLimit));
+const fs = require('node:fs');
+const { loadConfig } = require('./config');
+const { MARKETS } = require('./markets');
+const { createProviders } = require('./market-data');
+async function main() {
+  const [, , timeframe = '30m', yearsArg = '3', symbol = 'BTC/USDT'] = process.argv;
+  const duration = { '5m': 300000, '15m': 900000, '30m': 1800000, '1h': 3600000, '4h': 14400000, '1d': 86400000 }[timeframe];
+  const years = Number(yearsArg), market = MARKETS.find(m => m.symbol === symbol);
+  if (!market || !duration || !Number.isFinite(years) || years <= 0) throw new Error('Usage: node fetch_data_4h.js [30m|4h|...] [positive years] [BTC/USDT|XAU/USD]');
+  const providers = createProviders(loadConfig());
+  const now = Date.now(), all = [];
+  let since = Math.floor((now - years * 365.25 * 86400000) / duration) * duration;
+  while (since + duration <= now) {
+    const bars = await providers.candles(market, { since, limit: market.provider === 'oanda' ? 5000 : 1000, timeframe, now });
+    if (!bars.length) break;
+    const next = bars.at(-1).timestamp + duration;
+    if (next <= since) throw new Error('History pagination stopped advancing');
+    all.push(...bars.filter(c => c.timestamp >= since));
+    since = next;
+    console.log(`Fetched through ${new Date(since).toISOString()}`);
   }
-
-  // dedupe by timestamp just in case of overlap
-  const seen = new Set();
-  const deduped = allBars.filter((bar) => {
-    if (seen.has(bar[0])) return false;
-    seen.add(bar[0]);
-    return true;
-  });
-
-  // build CSV
-  const header = "timestamp,open,high,low,close,volume\n";
-  const rows = deduped.map((bar) => bar.join(",")).join("\n");
-
-  const base = symbol.split("/")[0].toLowerCase();
-  const outFile = `${base}_${timeframe}_history.csv`;
-  fs.writeFileSync(outFile, header + rows);
-  console.log(`Saved ${deduped.length} candles to ${outFile}`);
-
-  return deduped;
+  const candles = [...new Map(all.map(c => [c.timestamp, c])).values()].sort((a, b) => a.timestamp - b.timestamp);
+  if (!candles.length) throw new Error('Provider returned no completed historical candles');
+  const file = `${market.provider === 'bybit' ? 'btc' : 'xau'}_${timeframe}_history.csv`;
+  fs.writeFileSync(file, 'timestamp,open,high,low,close,volume\n' + candles.map(c => [c.timestamp, c.open, c.high, c.low, c.close, c.volume].join(',')).join('\n') + '\n');
+  console.log(`Saved ${candles.length} candles to ${file}; coverage ${new Date(candles[0].timestamp).toISOString()} to ${new Date(candles.at(-1).timestamp).toISOString()}`);
 }
-
-// Usage: node fetch_data_4h.js [timeframe] [years] [symbol]
-// e.g.:  node fetch_data_4h.js 30m 2
-//        node fetch_data_4h.js 30m 3 ETH/USDT
-const [, , timeframeArg, yearsArg, symbolArg] = process.argv;
-const args = [
-  symbolArg || "BTC/USDT",
-  ...(timeframeArg ? [timeframeArg] : []),
-  ...(yearsArg ? [Number(yearsArg)] : []),
-];
-
-fetchFullHistory(...args).catch((err) => {
-  console.error("Error fetching data:", err);
-});
+if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });

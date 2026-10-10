@@ -1,250 +1,95 @@
-// On-demand + auto-alert Telegram bot for the BTC/USDT 30m signal. Long-polls Telegram
-// (no public webhook needed), so it just needs to run continuously somewhere with
-// outbound internet access.
-const ccxt = require("ccxt");
-const fs = require("fs");
-const http = require("http");
-const path = require("path");
-const { computeIndicators, evaluateEntry, indicatorsReady } = require("./strategy");
-
-// Env vars take priority since most hosting platforms (Fly, Railway, pxxl.app, etc.)
-// inject secrets that way rather than mounting a config.json file.
-function loadConfig() {
-  if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
-    return {
-      telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
-      telegramChatId: process.env.TELEGRAM_CHAT_ID,
-    };
-  }
-  const configPath = path.join(__dirname, "config.json");
-  if (fs.existsSync(configPath)) {
-    return JSON.parse(fs.readFileSync(configPath, "utf-8"));
-  }
-  throw new Error(
-    "Missing config: set TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID env vars, or provide config.json (see config.example.json).",
-  );
-}
-
-const config = loadConfig();
-
-const SYMBOL = "BTC/USDT";
-const TIMEFRAME = "30m";
-const TELEGRAM_API = `https://api.telegram.org/bot${config.telegramBotToken}`;
-const ALLOWED_CHAT_ID = String(config.telegramChatId);
-
-const SIGNAL_KEYBOARD = {
-  keyboard: [["📊 Get Signal"]],
-  resize_keyboard: true,
-};
-
-// Created once and reused: a fresh ccxt instance reloads Bybit's entire market list on its
-// first API call, which is slow. Reusing one instance means that only happens on cold start,
-// not on every /signal tap or 15-minute auto-check.
-const exchange = new ccxt.bybit();
-
-async function telegramCall(method, body) {
-  const res = await fetch(`${TELEGRAM_API}/${method}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  return res.json();
-}
-
-async function sendMessage(chatId, text, extra = {}) {
-  const data = await telegramCall("sendMessage", {
-    chat_id: chatId,
-    text,
-    parse_mode: "Markdown",
-    ...extra,
-  });
-  if (!data.ok) console.error("sendMessage failed:", data);
-  return data;
-}
-
-// ---------- Signal lookup ----------
-async function fetchCurrentCandles() {
-  const bars = await exchange.fetchOHLCV(SYMBOL, TIMEFRAME, undefined, 300);
-  const candles = bars.map(([timestamp, open, high, low, close, volume]) => ({
-    timestamp,
-    open,
-    high,
-    low,
-    close,
-    volume,
-  }));
-
-  const withIndicators = computeIndicators(candles);
-  // drop the last candle since it's still forming (in-progress)
-  const closedCandles = withIndicators.slice(0, withIndicators.length - 1);
-  const curr = closedCandles[closedCandles.length - 1];
-  const prev = closedCandles[closedCandles.length - 2];
-  return { curr, prev };
-}
-
-async function getCurrentSignal() {
-  const { curr, prev } = await fetchCurrentCandles();
-  if (!curr || !prev || !indicatorsReady(curr) || !indicatorsReady(prev)) {
-    return { ready: false };
-  }
-
-  const signal = evaluateEntry(curr, prev);
-  const trend = curr.close > curr.trendEma ? "UPTREND" : curr.close < curr.trendEma ? "DOWNTREND" : "FLAT";
-
-  return { ready: true, signal, curr, trend };
-}
-
-function formatSignalMessage({ ready, signal, curr, trend }) {
-  if (!ready) {
-    return "⏳ Not enough warm-up data from the exchange right now — try again shortly.";
-  }
-
-  const asOf = new Date(curr.timestamp).toISOString();
-
-  if (signal) {
-    const emoji = signal.direction === "LONG" ? "🟢" : "🔴";
-    return (
-      `${emoji} *Signal: ${signal.direction}*\n` +
-      `${SYMBOL} (30m)\n` +
-      `Entry: ${signal.entry.toFixed(2)}\n` +
-      `Stop Loss: ${signal.sl.toFixed(2)}\n` +
-      `Take Profit: ${signal.tp.toFixed(2)}\n` +
-      `As of candle: ${asOf}`
-    );
-  }
-
-  return (
-    `⚪ *No active entry signal right now*\n` +
-    `${SYMBOL} (30m)\n` +
-    `Trend: ${trend}\n` +
-    `Price: ${curr.close.toFixed(2)}\n` +
-    `EMA50: ${curr.trendEma.toFixed(2)} | EMA8: ${curr.pullbackEma.toFixed(2)}\n` +
-    `As of candle: ${asOf}`
-  );
-}
-
-async function handleSignalRequest(chatId) {
-  try {
-    const result = await getCurrentSignal();
-    await sendMessage(chatId, formatSignalMessage(result));
-  } catch (err) {
-    console.error("Error computing signal:", err);
-    await sendMessage(chatId, `⚠️ Error fetching signal: ${err.message}`);
-  }
-}
-
-// ---------- Auto-alert loop ----------
-// Real signals only exist on a freshly-closed 30m candle, so polling every 15 minutes
-// catches a new candle promptly (2-4 checks per candle) without hammering the exchange
-// API. State is persisted to disk (not just in memory) so a restart doesn't miss a candle
-// that closed while the process was down, and doesn't re-alert for a candle it already sent.
-const ALERT_STATE_PATH = path.join(__dirname, "alert_state.json");
-const CHECK_INTERVAL_MS = 15 * 60 * 1000;
-
-function loadAlertState() {
-  try {
-    return JSON.parse(fs.readFileSync(ALERT_STATE_PATH, "utf-8"));
-  } catch {
-    return { lastAlertedCandleTime: null };
-  }
-}
-
-function saveAlertState(state) {
-  fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state));
-}
-
-async function checkForAutoAlert() {
-  try {
-    const result = await getCurrentSignal();
-    if (!result.ready || !result.signal) return;
-
-    const state = loadAlertState();
-    if (state.lastAlertedCandleTime === result.curr.timestamp) return;
-
-    await sendMessage(ALLOWED_CHAT_ID, formatSignalMessage(result));
-    saveAlertState({ lastAlertedCandleTime: result.curr.timestamp });
-    console.log(`Auto-alert sent for candle ${new Date(result.curr.timestamp).toISOString()}`);
-  } catch (err) {
-    console.error("Auto-alert check failed:", err.message);
-  }
-}
-
-function startAutoAlertLoop() {
-  checkForAutoAlert();
-  setInterval(checkForAutoAlert, CHECK_INTERVAL_MS);
-}
-
-// ---------- Update handling ----------
-async function handleUpdate(update) {
-  const message = update.message;
-  if (!message || !message.text) return;
-
-  const chatId = message.chat.id;
-  if (String(chatId) !== ALLOWED_CHAT_ID) {
-    console.log(`Ignoring message from unauthorized chat ${chatId}`);
-    return;
-  }
-
-  const text = message.text.trim();
-
-  if (text === "/start") {
-    await sendMessage(
-      chatId,
-      "👋 BTC signal bot ready.\n" +
-        "📊 Get Signal / /signal — current real strategy signal.\n" +
-        "🔔 Also watching in the background — you'll get a message here automatically whenever a real signal fires, no need to ask.",
-      { reply_markup: SIGNAL_KEYBOARD },
-    );
-  } else if (text === "/signal" || text === "📊 Get Signal") {
-    await handleSignalRequest(chatId);
-  }
-}
-
-// ---------- Long polling loop ----------
-async function pollLoop() {
-  let offset = 0;
-  console.log("Telegram bot started, long-polling for updates...");
-
-  while (true) {
+const http = require('node:http');
+const { loadConfig } = require('./config');
+const { MARKETS } = require('./markets');
+const { createProviders } = require('./market-data');
+const { getCurrentSignal, formatResult } = require('./signals');
+const { createAlertState, deliverAlert } = require('./alert-state');
+function createTelegram(config, fetchFn = fetch) {
+  return async function telegramCall(method, body) {
+    // Never log the request URL: it contains the bot token.
+    let response;
     try {
-      const data = await telegramCall("getUpdates", {
-        offset,
-        timeout: 30,
+      response = await fetchFn(`https://api.telegram.org/bot${config.telegramBotToken}/${method}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(method === 'getUpdates' ? 40000 : 10000),
       });
-
-      if (!data.ok) {
-        console.error("getUpdates failed:", data);
-        await new Promise((r) => setTimeout(r, 5000));
-        continue;
-      }
-
+    } catch { throw new Error('Telegram request failed or timed out'); }
+    const data = await response.json();
+    if (!response.ok || !data.ok) throw new Error(`Telegram ${method} rejected request (${data.error_code || response.status})`);
+    return data;
+  };
+}
+async function main() {
+  const config = loadConfig();
+  if (!config.telegramBotToken || !config.telegramChatId) throw new Error('Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID or config.json');
+  const telegram = createTelegram(config);
+  const providers = createProviders(config);
+  const state = createAlertState(config.stateDir);
+  const send = text => telegram('sendMessage', { chat_id: config.telegramChatId, text });
+  const health = { lastTelegramPoll: null, markets: {} };
+  let stopping = false, timer, offset = 0;
+  async function lookup(market) {
+    if (market.provider === 'oanda' && (!config.oandaApiToken || !config.oandaAccountId)) {
+      health.markets[market.symbol] = { checkedAt: Date.now(), status: 'not-configured' };
+      return { market, status: 'not-configured' };
+    }
+    try {
+      const result = await getCurrentSignal(market, providers);
+      health.markets[market.symbol] = { checkedAt: Date.now(), status: result.status };
+      return result;
+    } catch (error) {
+      console.error(`${market.symbol}: ${error.message}`);
+      health.markets[market.symbol] = { checkedAt: Date.now(), status: 'error' };
+      return { market, status: 'error' };
+    }
+  }
+  async function check() {
+    // Sequential cycles prevent overlapping auto-alert sends. One feed failure never blocks the other.
+    for (const market of MARKETS) {
+      const result = await lookup(market);
+      try { await deliverAlert(result, state, r => send(formatResult(r))); }
+      catch (error) { console.error(`${market.symbol} alert: ${error.message}`); }
+    }
+    if (!stopping) timer = setTimeout(check, 60000);
+  }
+  async function handleUpdate(update) {
+    const message = update.message;
+    if (!message?.text || String(message.chat.id) !== String(config.telegramChatId)) return;
+    const command = message.text.trim().split(/\s+/)[0].split('@')[0].toLowerCase();
+    if (command === '/start' || command === '/help') {
+      await telegram('sendMessage', { chat_id: config.telegramChatId, text: 'SignalBot watches BTC/USDT and XAU/USD on 30m candles.\n/signal — both markets\n/btc — Bitcoin\n/gold — Gold\n/status — feed status\nFresh qualifying entries are sent automatically once per market/candle. Alerts may overlap; no orders are placed. Gold needs an OANDA account offering XAU_USD.', reply_markup: { keyboard: [['📊 Get Signal'], ['/btc', '/gold'], ['/status']], resize_keyboard: true } });
+    } else if (command === '/status') {
+      await send(MARKETS.map(m => `${m.symbol}: ${health.markets[m.symbol]?.status || 'not checked'}${m.provider === 'oanda' && (!config.oandaApiToken || !config.oandaAccountId) ? '\nSet OANDA_API_TOKEN and OANDA_ACCOUNT_ID to enable gold.' : ''}`).join('\n\n'));
+    } else if (['/signal', '/btc', '/gold', '/xau'].includes(command) || message.text.trim() === '📊 Get Signal') {
+      const selected = command === '/btc' ? MARKETS.slice(0, 1) : ['/gold', '/xau'].includes(command) ? MARKETS.slice(1) : MARKETS;
+      for (const market of selected) await send(formatResult(await lookup(market)));
+    }
+  }
+  const server = http.createServer((req, res) => {
+    const now = Date.now();
+    const healthy = health.lastTelegramPoll !== null && now - health.lastTelegramPoll < 90000 && MARKETS.every(m => {
+      const h = health.markets[m.symbol]; return h && !['error', 'not-configured', 'invalid-quote'].includes(h.status) && now - h.checkedAt < 120000;
+    });
+    // Root preserves existing hosts' liveness checks; /health reports dependency readiness.
+    res.writeHead(req.url !== '/health' || healthy ? 200 : 503, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ healthy, ...health }));
+  }).listen(process.env.PORT || 3000, '0.0.0.0');
+  function shutdown() { stopping = true; clearTimeout(timer); server.close(); }
+  process.once('SIGTERM', shutdown); process.once('SIGINT', shutdown);
+  check().catch(error => { console.error(error.message); shutdown(); process.exitCode = 1; });
+  while (!stopping) {
+    try {
+      const data = await telegram('getUpdates', { offset, timeout: 30, allowed_updates: ['message'] });
+      health.lastTelegramPoll = Date.now();
       for (const update of data.result) {
+        // Commands are acknowledged after handling; Telegram errors get retried.
+        await handleUpdate(update);
         offset = update.update_id + 1;
-        handleUpdate(update).catch((err) =>
-          console.error("Error handling update:", err),
-        );
       }
-    } catch (err) {
-      console.error("Polling error:", err.message);
-      await new Promise((r) => setTimeout(r, 5000));
+    } catch (error) {
+      console.error(error.message);
+      if (!stopping) await new Promise(resolve => setTimeout(resolve, 5000));
     }
   }
 }
-
-// Some hosting platforms (Render, Railway web services, pxxl.app, etc.) expect the
-// process to bind to a port for health checks / to consider the deploy "up", even
-// though this bot's real work happens over Telegram long-polling, not HTTP. Harmless
-// no-op on hosts that don't check it (Fly.io machines, a plain VPS).
-function startHealthServer() {
-  const port = process.env.PORT || 3000;
-  http
-    .createServer((req, res) => {
-      res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end("SignalBot is running.");
-    })
-    .listen(port, "0.0.0.0", () => console.log(`Health check server listening on :${port}`));
-}
-
-startHealthServer();
-startAutoAlertLoop();
-pollLoop();
+if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
+module.exports = { createTelegram, main };

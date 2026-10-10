@@ -1,131 +1,33 @@
-const fs = require("fs");
-const { computeIndicators, indicatorsReady, evaluateEntry, REWARD_R_MULT } = require("./strategy");
-
-// ---------- 1. Load CSV ----------
-function loadCandles(path) {
-  const raw = fs.readFileSync(path, "utf-8").trim().split("\n");
-  const rows = raw.slice(1); // skip header
-  return rows.map((line) => {
-    const [timestamp, open, high, low, close, volume] = line
-      .split(",")
-      .map(Number);
-    return { timestamp, open, high, low, close, volume };
-  });
+const fs = require('node:fs');
+const path = require('node:path');
+const { parseArgs } = require('node:util');
+const { MARKETS } = require('./markets');
+const { simulate, scoreTrades, loadCsv } = require('./backtest-engine');
+function main() {
+  const { values, positionals } = parseArgs({ allowPositionals: true, options: { market: { type: 'string', default: 'BTC/USDT' }, mode: { type: 'string', default: 'independent' }, timeframe: { type: 'string', default: '30m' }, fee: { type: 'string' }, spread: { type: 'string', default: '0' }, slippage: { type: 'string', default: '0' } } });
+  const selected = MARKETS.find(m => m.symbol === values.market);
+  if (!selected) throw new Error('Market must be BTC/USDT or XAU/USD');
+  const duration = { '5m': 300000, '15m': 900000, '30m': 1800000, '1h': 3600000, '4h': 14400000, '1d': 86400000 }[values.timeframe];
+  if (!duration) throw new Error('Unsupported timeframe');
+  const market = { ...selected, timeframe: values.timeframe, timeframeMs: duration };
+  const defaultFile = `${selected.provider === 'bybit' ? 'btc' : 'xau'}_${values.timeframe}_history.csv`;
+  const csv = positionals[0] || defaultFile;
+  const candles = loadCsv(fs.readFileSync(csv, 'utf8')).filter(c => c.timestamp + duration <= Date.now());
+  const feeRate = values.fee === undefined ? (selected.provider === 'bybit' ? 0.0015 : 0) : Number(values.fee);
+  const result = simulate(candles, market, { mode: values.mode, feeRate, spread: Number(values.spread), slippage: Number(values.slippage) });
+  const report = (list, label) => console.log(label, JSON.stringify(scoreTrades(list), null, 2));
+  console.log(`${market.symbol} ${market.timeframe}; mode=${values.mode}; round-trip fee=${feeRate}; spread=${values.spread}; slippage/side=${values.slippage}`);
+  console.log('Next candle open entries; stop-first ambiguous bars; gap-aware stop fills. Costs are assumptions, not measured execution.');
+  report(result.trades, 'FULL DATASET');
+  // Diagnostic time split only. Do not call reused/tuned data untouched out-of-sample.
+  const cutoff = candles[Math.floor(candles.length * 0.7)]?.timestamp;
+  report(result.trades.filter(t => t.entryTime < cutoff && t.exitTime < cutoff), 'EARLIER 70% OF CANDLE TIME');
+  report(result.trades.filter(t => t.entryTime >= cutoff), 'LATER 30% OF CANDLE TIME (diagnostic only)');
+  console.log(`Open trades: ${result.open.length}; pending final signal: ${Boolean(result.pending)}; ambiguous exits: ${result.ambiguousBars}; skipped gap entries: ${result.skippedGapEntries}`);
+  if (selected.provider === 'oanda' && Number(values.spread) === 0) console.warn('Gold spread is zero: supply --spread in USD/oz for meaningful cost estimates.');
+  const stem = path.basename(csv, path.extname(csv));
+  const output = csv === 'btc_30m_history.csv' && !positionals.length ? 'trade_log.json' : `trade_log_${stem}.json`;
+  fs.writeFileSync(output, JSON.stringify([...result.trades, ...result.open], null, 2));
+  console.log(`Saved ${output}`);
 }
-
-// ---------- 2. Load data + compute indicators ----------
-// Usage: node backtest.js [csv_file]  (defaults to btc_30m_history.csv, the live strategy's timeframe)
-const csvFile = process.argv[2] || "btc_30m_history.csv";
-const candles = loadCandles(csvFile);
-const withIndicators = computeIndicators(candles);
-
-// trim candles where indicators aren't ready yet (nulls)
-const data = withIndicators.filter(indicatorsReady);
-
-console.log(`Usable candles after indicator warm-up: ${data.length}`);
-
-// ---------- 4. Backtest simulation loop ----------
-const trades = [];
-let inTrade = false;
-let trade = {};
-
-for (let i = 1; i < data.length; i++) {
-  const curr = data[i];
-  const prev = data[i - 1];
-
-  if (!inTrade) {
-    const signal = evaluateEntry(curr, prev);
-    if (signal) {
-      trade = { ...signal, entryIdx: i, entryTime: curr.timestamp };
-      inTrade = true;
-    }
-  } else {
-    if (trade.direction === "LONG") {
-      if (curr.low <= trade.sl) {
-        trade.result = "LOSS";
-        trade.exitIdx = i;
-        inTrade = false;
-      } else if (curr.high >= trade.tp) {
-        trade.result = "WIN";
-        trade.exitIdx = i;
-        inTrade = false;
-      }
-    } else {
-      if (curr.high >= trade.sl) {
-        trade.result = "LOSS";
-        trade.exitIdx = i;
-        inTrade = false;
-      } else if (curr.low <= trade.tp) {
-        trade.result = "WIN";
-        trade.exitIdx = i;
-        inTrade = false;
-      }
-    }
-
-    if (!inTrade) {
-      trades.push(trade);
-      trade = {};
-    }
-  }
-}
-
-// ---------- 5. Score results ----------
-function scoreTrades(tradeList, label) {
-  const wins = tradeList.filter((t) => t.result === "WIN").length;
-  const losses = tradeList.filter((t) => t.result === "LOSS").length;
-  const total = wins + losses;
-  const winRate = total ? wins / total : 0;
-  const expectancy = winRate * REWARD_R_MULT - (1 - winRate) * 1.0;
-
-  console.log(`\n--- ${label} ---`);
-  console.log(`Total trades: ${total}`);
-  console.log(`Wins: ${wins} | Losses: ${losses}`);
-  console.log(`Win rate: ${(winRate * 100).toFixed(1)}%`);
-  console.log(
-    `Expectancy: ${expectancy >= 0 ? "+" : ""}${expectancy.toFixed(2)}R per trade`,
-  );
-  console.log(`Net R over period: ${(expectancy * total).toFixed(1)}R`);
-
-  return { total, winRate, expectancy };
-}
-
-const completedTrades = trades.filter((t) => t.result);
-
-// Full dataset score
-scoreTrades(completedTrades, "FULL DATASET");
-
-// Out-of-sample split: first 70% vs last 30%
-const splitIdx = Math.floor(completedTrades.length * 0.7);
-const inSample = completedTrades.slice(0, splitIdx);
-const outOfSample = completedTrades.slice(splitIdx);
-
-scoreTrades(inSample, "IN-SAMPLE (first 70%)");
-scoreTrades(outOfSample, "OUT-OF-SAMPLE (last 30%)");
-
-// Fee-adjusted (assume 0.15% round-trip cost per trade, expressed in R terms is tricky —
-// simplest approximation: subtract a flat R deduction per trade for fees/slippage)
-const feeDragPerTradeR = 0.05; // rough estimate, ~5% of a full R unit per trade
-const feeAdjustedExpectancy =
-  completedTrades.length > 0
-    ? completedTrades.reduce(
-        (acc, t) => acc + (t.result === "WIN" ? REWARD_R_MULT : -1.0),
-        0,
-      ) /
-        completedTrades.length -
-      feeDragPerTradeR
-    : 0;
-
-console.log(`\n--- FEE-ADJUSTED (rough estimate) ---`);
-console.log(
-  `Expectancy after ~${feeDragPerTradeR}R/trade fee & slippage drag: ${
-    feeAdjustedExpectancy >= 0 ? "+" : ""
-  }${feeAdjustedExpectancy.toFixed(2)}R per trade`,
-);
-
-// Save full trade log for inspection. Keep the default run's output filename
-// unchanged (trade_log.json) so analyze_by_year.js/analyze_recent.js keep working;
-// give other timeframes their own file so they don't clobber it.
-const tfLabel = csvFile.match(/^btc_(.+)_history\.csv$/)?.[1] || csvFile.replace(/\.csv$/, "");
-const tradeLogFile = process.argv[2] ? `trade_log_${tfLabel}.json` : "trade_log.json";
-fs.writeFileSync(tradeLogFile, JSON.stringify(completedTrades, null, 2));
-console.log(`\nFull trade log saved to ${tradeLogFile}`);
+if (require.main === module) { try { main(); } catch (error) { console.error(error.message); process.exitCode = 1; } }

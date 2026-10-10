@@ -1,0 +1,10 @@
+.git
+node_modules
+config.json
+.env
+.env.*
+alert_state.json
+alert_state.json.tmp
+trade_log*.json
+*.csv
+test

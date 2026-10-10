@@ -1,33 +1,86 @@
 # SignalBot
 
-BTC/USDT 30m trend-pullback signal bot (paper trading / research only — no real orders are placed).
+Telegram research alerts for **BTC/USDT and XAU/USD**, using 30-minute trend/pullback candles. No orders are placed. Each market is checked independently every minute; every qualifying fresh entry can alert, including entries that overlap earlier signals.
 
 ## Setup
 
-```
-npm install
+Requires **Node.js 24+**.
+
+```sh
+npm ci
 cp config.example.json config.json
+npm start
 ```
 
-Fill in `config.json` with your Telegram bot token (from [@BotFather](https://t.me/BotFather)) and your chat ID. `config.json` is gitignored — never commit it.
+Fill in your Telegram bot token and chat ID in `config.json`, or set the corresponding environment variables on your host. Environment variables override individual file fields. Secrets and local state are gitignored. Only the configured chat can use the bot.
 
-On a hosting platform, you can skip `config.json` entirely and set `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` as environment variables/secrets instead — `telegram_bot.js` checks those first.
+| Variable | Purpose |
+| --- | --- |
+| `TELEGRAM_BOT_TOKEN` | Token from Telegram BotFather |
+| `TELEGRAM_CHAT_ID` | Destination and authorised chat ID |
+| `OANDA_API_TOKEN` | OANDA v20 personal API token; required for gold |
+| `OANDA_ACCOUNT_ID` | OANDA v20 account ID offering `XAU_USD`; required for gold |
+| `OANDA_ENVIRONMENT` | `practice` (default) or `live`; must match the token/account |
+| `STATE_DIR` | Writable persistent directory for delivery state; default project directory, `/data` in Docker |
+| `PORT` | HTTP health server port; default `3000` |
 
-## Scripts
+### Enable gold
 
-- `npm run bot` — starts `telegram_bot.js`: send `/signal` (or tap the "📊 Get Signal" button) anytime for the current BTC/USDT 30m signal, and it also auto-alerts your chat the moment a real signal fires (checks every 15 minutes in the background — no need to ask). Long-polls Telegram, so it just needs to stay running with outbound internet access — no public URL/webhook needed.
-- `npm run backtest` — runs `backtest.js` against `btc_30m_history.csv` (the live strategy's timeframe) and writes `trade_log.json`. Pass a different CSV to backtest another dataset, e.g. `node backtest.js btc_4h_history.csv` (writes `trade_log_4h_history.json` instead, so it doesn't clobber the default).
-- `node fetch_data_4h.js [timeframe] [years]` — fetches/refreshes historical candles from Bybit into `btc_<timeframe>_history.csv`, e.g. `node fetch_data_4h.js 30m 3` for 3 years of 30m bars.
+Gold uses **OANDA XAU_USD**, not a tokenized-gold cryptocurrency or a crypto perpetual. Obtain the token and account ID from your OANDA v20 account and confirm that its available instruments include XAU_USD. Availability depends on the account's OANDA entity/region. A practice account is sufficient if it offers this instrument. Do not select `live` unless your credentials belong to that environment.
 
-`strategy.js` holds the shared indicator math (EMA/SMA/ATR) and entry-signal rule used by both `backtest.js` and the bot, so backtested results and live signals can't drift apart. The current entry rule (trend EMA 50 / pullback EMA 8, 2.0×ATR stop, 3.0× reward, volume filter) was chosen by grid-searching 384 parameter combinations over 3 years of 30m data and picking the one with the most consistent in-sample vs. out-of-sample expectancy — see `strategy.js` for the exact numbers. Past backtested performance doesn't guarantee future results, especially at this granularity — re-check periodically with `analyze_recent.js`-style tooling.
+Set `OANDA_API_TOKEN`, `OANDA_ACCOUNT_ID`, and `OANDA_ENVIRONMENT`, then restart/redeploy. The equivalent `config.json` fields are `oandaApiToken`, `oandaAccountId`, and `oandaEnvironment`. Without those credentials, gold reports unavailable while Bitcoin continues to run. The bot never opens or closes broker positions, even when using a live data account.
 
-## Running the bot continuously
+The OANDA candle and pricing APIs supply closed midpoint candles and the account's bid/ask quote. Gold's profile uses EMA50/EMA8, a 2×ATR stop and a reference 3R target, **without BTC's volume filter**: OANDA volume counts price updates, not exchange-traded gold volume. This is an **unvalidated gold research baseline**. No XAU/USD performance or accuracy is claimed. Export your account's history, backtest with realistic costs, and forward-test before relying on it.
 
-`telegram_bot.js` needs to run 24/7 somewhere with internet access to reach `api.telegram.org` and Bybit's API — it won't respond to `/signal` while it's stopped. It also opens a small HTTP health-check server on `PORT` (default 3000) for platforms that expect a bound port to consider the app "up"; that's unused on plain background-worker hosts. Options, roughly cheapest/simplest to most robust:
+## Telegram commands
 
-- **Fly.io** — `fly launch` picks up the included `Dockerfile` automatically; set `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` via `fly secrets set`. Make sure the app isn't configured to auto-stop idle machines, since this isn't a request-driven web service.
-- **Railway** — connect the GitHub repo, it builds the `Dockerfile` automatically; set `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` as project variables.
-- **pxxl.app** (or similar "web app" PaaS) — should work since the bot now binds to `PORT`; set `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` as environment variables in its dashboard. Double-check the platform actually keeps a non-HTTP-driven process alive continuously rather than only while serving requests.
-- **A small VPS** (Hetzner/DigitalOcean, ~$4-6/mo) — clone the repo, `npm install`, run `node telegram_bot.js` under `pm2` or a `systemd` service so it restarts on crash/reboot.
+- `/start` or `/help`: instructions and buttons.
+- `/signal` or **📊 Get Signal**: checks both markets; reports a signal or the reason none qualifies for each.
+- `/btc`: Bitcoin only.
+- `/gold` or `/xau`: gold only.
+- `/status`: last market-check statuses and missing gold configuration.
 
-Any of these keeps the bot reachable even when your own computer is off.
+Automatic alerts are deduplicated per symbol/timeframe/candle. Only successful Telegram deliveries are recorded, so rejected sends are retried on subsequent checks while the signal remains fresh. Use one running bot replica and a persistent state volume. Telegram has no idempotency key: a crash between remote delivery and local state saving can still produce a duplicate.
+
+## What qualifies as a fresh alert?
+
+- Valid numeric OHLCV data, strictly increasing candle timestamps, and enough indicator warm-up.
+- The newest completed candle closed **within the last three minutes**; forming candles are excluded by time and OANDA's `complete` flag. Candle gaps skip entry across that gap.
+- Strategy entry conditions: EMA50 trend, EMA8 pullback/reclaim; BTC additionally requires volume above 2× its 10-candle SMA.
+- A tradeable quote, no more than 60 seconds old.
+- Bid/ask spread no greater than **0.10×ATR**.
+- Current direction-specific bid/ask within **0.25×ATR** of the reference entry.
+
+These limits are explicit in `markets.js` and `signals.js`. They are conservative baseline rules, not optimised gold parameters. Gold's daily/session breaks and weekends naturally produce no fresh entry; broker pricing also supplies tradeability status.
+
+Messages show the **reference candle-close entry**, current indicative bid/ask, stop, target, candle-close UTC time and expiry. The reference 3:1 ratio can differ from the ratio at a later execution price. A qualifying signal is a rule match, not evidence of a profitable trade. If Telegram is unavailable until expiry, that alert is deliberately skipped rather than sent late.
+
+## Backtesting and history
+
+```sh
+npm test
+npm run backtest
+node backtest.js --mode single
+node fetch_data_4h.js 30m 3 BTC/USDT
+node fetch_data_4h.js 30m 3 XAU/USD
+node backtest.js xau_30m_history.csv --market XAU/USD --spread 0.40 --slippage 0.05
+node analyze_by_year.js trade_log_xau_30m_history.json
+node analyze_recent.js trade_log_xau_30m_history.json
+```
+
+`fetch_data_4h.js` retains its old filename for compatibility but supports both markets and 5m, 15m, 30m, 1h, 4h, 1d. It exports available completed candles; requested years do not guarantee that the provider retains that much history. Coverage is printed. CSV format: `timestamp,open,high,low,close,volume`, with UTC timestamps in **milliseconds**. A different timeframe must also be passed to the backtest, e.g. `node backtest.js btc_4h_history.csv --timeframe 4h`.
+
+Backtest `--mode independent` (default) models every entry independently, matching the bot's overlapping-alert policy. `--mode single` is available to study one-position execution. Signals are evaluated at candle close and filled at the next contiguous candle's open; entries outside the live price-drift/spread limits are skipped. Stops crossing a gap use the adverse opening price; when a bar touches stop and target, stop wins conservatively. Open final positions are retained with `result: OPEN` and excluded from completed-trade scoring.
+
+Costs are calculated per trade relative to its actual stop distance: `--fee` is the **round-trip decimal rate**, `--spread` is the round-trip price-unit spread, `--slippage` is price units per side. BTC defaults to a 0.0015 round-trip fee assumption; gold defaults to zero fees and warns when spread is omitted. The gold command above uses **illustrative**, not measured, spread/slippage. Use your broker's costs. Shared reports use actual gross/net R, eliminating the old 2.5R-versus-3R scoring error. Legacy logs without cost fields cannot provide cost-adjusted results.
+
+The bundled BTC history ends in July 2026. The corrected all-entry simulation on that history is negative after the default cost assumption; the code does not claim a proven trading edge. Calendar splits are labelled diagnostic, not untouched out-of-sample validation. Historical execution approximates fills; it cannot reproduce quote freshness, variable live spreads, intrabar sequence or all alert transport delays. Overlapping R totals are not a portfolio return or independent statistical observations.
+
+## Hosting and health
+
+Deploy the Dockerfile or run `npm start` as a continuous worker. Mount persistent storage at `/data` in Docker, or point `STATE_DIR` at your host's persistent volume. Configure Telegram and OANDA secrets on the host. Keep the process running; do not allow an idle HTTP service to sleep.
+
+- `/` and `/live`: process liveness, HTTP 200 (preserves existing deployment probes).
+- `/health`: dependency readiness, HTTP 503 when Telegram polling or either data feed has failed/is overdue; includes per-market statuses. A closed/stale market with a successful check is not a provider outage.
+
+The bot uses bounded network timeouts, serialized alert cycles and per-market failure isolation. Tests use mocked data and Telegram responses, so running tests does not send messages. GitHub Actions runs tests and the bundled backtest on Node 24.

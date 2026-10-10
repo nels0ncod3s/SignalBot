@@ -27,3 +27,6 @@ vite.config.ts.timestamp-*
 
 config.json
 alert_state.json
+
+alert_state.json.tmp
+xau_*_history.csv
