@@ -30,3 +30,6 @@ alert_state.json
 
 alert_state.json.tmp
 xau_*_history.csv
+
+research-data/
+__pycache__/

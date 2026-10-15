@@ -1,0 +1,10 @@
+{
+  "model": "gradient-boosting-100-depth2",
+  "training_samples": 25300,
+  "validation_candidates": 11146,
+  "probabilityThreshold": 0.6,
+  "selected": 0,
+  "winRate": null,
+  "netExpectancy": null,
+  "eligible": false
+}

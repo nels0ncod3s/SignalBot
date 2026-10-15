@@ -86,3 +86,7 @@ Deploy the Dockerfile or run `npm start` as a continuous worker. Mount persisten
 - `/health`: dependency readiness, HTTP 503 when Telegram polling or either data feed has failed/is overdue; includes per-market statuses. A closed/stale market with a successful check is not a provider outage.
 
 The bot uses bounded network timeouts, serialized alert cycles and per-market failure isolation. Tests use mocked data and Telegram responses, so running tests does not send messages. GitHub Actions runs tests and the bundled backtest on Node 24.
+
+## Accuracy-focused follow-up
+
+The [15 October accuracy study](docs/btc-accuracy-study.md) tested twelve new rule combinations and a fixed predictive model using checksum-verified Binance archives. No candidate passed the predeclared development-validation requirements, so no replacement was promoted. The study includes optional download/reproduction scripts and exact data hashes. These tools do not run inside the Telegram bot.

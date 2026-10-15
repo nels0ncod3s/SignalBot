@@ -1,0 +1,314 @@
+[
+  {
+    "name": "rsi-pullback-1h-1R",
+    "type": "rsi-pullback",
+    "tf": "1h",
+    "reward": 1,
+    "train": {
+      "total": 253,
+      "wins": 146,
+      "losses": 107,
+      "winRate": 0.5770750988142292,
+      "expectancy": 0.1541297870743283,
+      "netExpectancy": 0.05496858877178065,
+      "grossR": 38.994836129805066,
+      "netR": 13.907052959260504
+    },
+    "validation": {
+      "total": 119,
+      "wins": 60,
+      "losses": 59,
+      "winRate": 0.5042016806722689,
+      "expectancy": 0.008413255020294767,
+      "netExpectancy": -0.09868788814631885,
+      "grossR": 1.0011773474150774,
+      "netR": -11.743858689411942
+    }
+  },
+  {
+    "name": "rsi-pullback-1h-1.5R",
+    "type": "rsi-pullback",
+    "tf": "1h",
+    "reward": 1.5,
+    "train": {
+      "total": 253,
+      "wins": 115,
+      "losses": 138,
+      "winRate": 0.45454545454545453,
+      "expectancy": 0.13635017191532658,
+      "netExpectancy": 0.037113385787869095,
+      "grossR": 34.496593494577624,
+      "netR": 9.389686604330882
+    },
+    "validation": {
+      "total": 119,
+      "wins": 47,
+      "losses": 72,
+      "winRate": 0.3949579831932773,
+      "expectancy": -0.012592803066519907,
+      "netExpectancy": -0.11969079262520398,
+      "grossR": -1.498543564915869,
+      "netR": -14.243204322399274
+    }
+  },
+  {
+    "name": "rsi2-reversal-1h-1R",
+    "type": "rsi2-reversal",
+    "tf": "1h",
+    "reward": 1,
+    "train": {
+      "total": 930,
+      "wins": 495,
+      "losses": 435,
+      "winRate": 0.532258064516129,
+      "expectancy": 0.06451122672724689,
+      "netExpectancy": -0.03742544688924414,
+      "grossR": 59.99544085633961,
+      "netR": -34.805665606997046
+    },
+    "validation": {
+      "total": 430,
+      "wins": 225,
+      "losses": 205,
+      "winRate": 0.5232558139534884,
+      "expectancy": 0.046511085341408756,
+      "netExpectancy": -0.059501371054448485,
+      "grossR": 19.999766696805764,
+      "netR": -25.58558955341285
+    }
+  },
+  {
+    "name": "rsi2-reversal-1h-1.5R",
+    "type": "rsi2-reversal",
+    "tf": "1h",
+    "reward": 1.5,
+    "train": {
+      "total": 930,
+      "wins": 404,
+      "losses": 526,
+      "winRate": 0.4344086021505376,
+      "expectancy": 0.08601817725311982,
+      "netExpectancy": -0.01593381719870487,
+      "grossR": 79.99690484540143,
+      "netR": -14.81844999479553
+    },
+    "validation": {
+      "total": 430,
+      "wins": 179,
+      "losses": 251,
+      "winRate": 0.41627906976744183,
+      "expectancy": 0.040695490933530844,
+      "netExpectancy": -0.06532306980469829,
+      "grossR": 17.499061101418263,
+      "netR": -28.088920016020268
+    }
+  },
+  {
+    "name": "band-reclaim-1h-1R",
+    "type": "band-reclaim",
+    "tf": "1h",
+    "reward": 1,
+    "train": {
+      "total": 213,
+      "wins": 131,
+      "losses": 82,
+      "winRate": 0.6150234741784038,
+      "expectancy": 0.23004006905833912,
+      "netExpectancy": 0.1261762952059744,
+      "grossR": 48.99853470942623,
+      "netR": 26.875550878872545
+    },
+    "validation": {
+      "total": 83,
+      "wins": 43,
+      "losses": 40,
+      "winRate": 0.5180722891566265,
+      "expectancy": 0.036143985403856736,
+      "netExpectancy": -0.06914896440276264,
+      "grossR": 2.999950788520109,
+      "netR": -5.739364045429299
+    }
+  },
+  {
+    "name": "band-reclaim-1h-1.5R",
+    "type": "band-reclaim",
+    "tf": "1h",
+    "reward": 1.5,
+    "train": {
+      "total": 213,
+      "wins": 101,
+      "losses": 112,
+      "winRate": 0.47417840375586856,
+      "expectancy": 0.18543914329813052,
+      "netExpectancy": 0.08157008790054644,
+      "grossR": 39.4985375225018,
+      "netR": 17.374428722816393
+    },
+    "validation": {
+      "total": 83,
+      "wins": 31,
+      "losses": 52,
+      "winRate": 0.37349397590361444,
+      "expectancy": -0.06626559744685197,
+      "netExpectancy": -0.1716172817137236,
+      "grossR": -5.500044588088713,
+      "netR": -14.244234382239059
+    }
+  },
+  {
+    "name": "rsi-pullback-4h-1R",
+    "type": "rsi-pullback",
+    "tf": "4h",
+    "reward": 1,
+    "train": {
+      "total": 93,
+      "wins": 48,
+      "losses": 45,
+      "winRate": 0.5161290322580645,
+      "expectancy": 0.03225862114531805,
+      "netExpectancy": -0.02407270930903902,
+      "grossR": 3.000051766514579,
+      "netR": -2.238761965740629
+    },
+    "validation": {
+      "total": 48,
+      "wins": 25,
+      "losses": 23,
+      "winRate": 0.5208333333333334,
+      "expectancy": 0.041666662740397126,
+      "netExpectancy": -0.022853462883531947,
+      "grossR": 1.999999811539062,
+      "netR": -1.0969662184095335
+    }
+  },
+  {
+    "name": "rsi-pullback-4h-1.5R",
+    "type": "rsi-pullback",
+    "tf": "4h",
+    "reward": 1.5,
+    "train": {
+      "total": 91,
+      "wins": 39,
+      "losses": 52,
+      "winRate": 0.42857142857142855,
+      "expectancy": 0.0714288608294347,
+      "netExpectancy": 0.0151918609037045,
+      "grossR": 6.500026335478557,
+      "netR": 1.3824593422371094
+    },
+    "validation": {
+      "total": 48,
+      "wins": 17,
+      "losses": 31,
+      "winRate": 0.3541666666666667,
+      "expectancy": -0.11458294715333123,
+      "netExpectancy": -0.17909526091754505,
+      "grossR": -5.499981463359899,
+      "netR": -8.596572524042163
+    }
+  },
+  {
+    "name": "rsi2-reversal-4h-1R",
+    "type": "rsi2-reversal",
+    "tf": "4h",
+    "reward": 1,
+    "train": {
+      "total": 316,
+      "wins": 176,
+      "losses": 140,
+      "winRate": 0.5569620253164557,
+      "expectancy": 0.113924041610658,
+      "netExpectancy": 0.0568997496576008,
+      "grossR": 35.99999714896793,
+      "netR": 17.980320891801853
+    },
+    "validation": {
+      "total": 169,
+      "wins": 77,
+      "losses": 92,
+      "winRate": 0.4556213017751479,
+      "expectancy": -0.08874452567428334,
+      "netExpectancy": -0.15236252364104103,
+      "grossR": -14.997824838953884,
+      "netR": -25.749266495335934
+    }
+  },
+  {
+    "name": "rsi2-reversal-4h-1.5R",
+    "type": "rsi2-reversal",
+    "tf": "4h",
+    "reward": 1.5,
+    "train": {
+      "total": 314,
+      "wins": 137,
+      "losses": 177,
+      "winRate": 0.43630573248407645,
+      "expectancy": 0.09076423985898145,
+      "netExpectancy": 0.03371116376135957,
+      "grossR": 28.499971315720174,
+      "netR": 10.585305421066904
+    },
+    "validation": {
+      "total": 169,
+      "wins": 58,
+      "losses": 111,
+      "winRate": 0.3431952662721893,
+      "expectancy": -0.14199052294892064,
+      "netExpectancy": -0.20564846170924117,
+      "grossR": -23.99639837836759,
+      "netR": -34.754590028861756
+    }
+  },
+  {
+    "name": "band-reclaim-4h-1R",
+    "type": "band-reclaim",
+    "tf": "4h",
+    "reward": 1,
+    "train": {
+      "total": 81,
+      "wins": 45,
+      "losses": 36,
+      "winRate": 0.5555555555555556,
+      "expectancy": 0.11111091749288356,
+      "netExpectancy": 0.052587050403198665,
+      "grossR": 8.999984316923568,
+      "netR": 4.259551082659092
+    },
+    "validation": {
+      "total": 38,
+      "wins": 16,
+      "losses": 22,
+      "winRate": 0.42105263157894735,
+      "expectancy": -0.1578392368233808,
+      "netExpectancy": -0.22129279390509418,
+      "grossR": -5.997890999288471,
+      "netR": -8.409126168393579
+    }
+  },
+  {
+    "name": "band-reclaim-4h-1.5R",
+    "type": "band-reclaim",
+    "tf": "4h",
+    "reward": 1.5,
+    "train": {
+      "total": 80,
+      "wins": 35,
+      "losses": 45,
+      "winRate": 0.4375,
+      "expectancy": 0.09374988995288858,
+      "netExpectancy": 0.03514064554686678,
+      "grossR": 7.499991196231086,
+      "netR": 2.811251643749342
+    },
+    "validation": {
+      "total": 38,
+      "wins": 12,
+      "losses": 26,
+      "winRate": 0.3157894736842105,
+      "expectancy": -0.2104571260117094,
+      "netExpectancy": -0.2739106728432217,
+      "grossR": -7.997370788444957,
+      "netR": -10.408605568042423
+    }
+  }
+]
