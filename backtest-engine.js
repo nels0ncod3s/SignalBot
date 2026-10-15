@@ -1,5 +1,5 @@
 const { computeIndicators, indicatorsReady, evaluateEntry } = require('./strategy');
-function simulate(candles, market, { mode = 'independent', feeRate = 0, spread = 0, slippage = 0 } = {}) {
+function simulate(candles, market, { mode = 'independent', feeRate = 0, spread = 0, slippage = 0, entryRule = evaluateEntry } = {}) {
   if (!['independent', 'single'].includes(mode)) throw new Error('Mode must be independent or single');
   if (![feeRate, spread, slippage].every(v => Number.isFinite(v) && v >= 0)) throw new Error('Costs must be non-negative numbers');
   const data = computeIndicators(candles);
@@ -37,7 +37,7 @@ function simulate(candles, market, { mode = 'independent', feeRate = 0, spread =
     }
     if (!prev || !indicatorsReady(curr) || !indicatorsReady(prev) || curr.timestamp - prev.timestamp !== market.timeframeMs) continue;
     if (mode === 'single' && active.length) continue;
-    const signal = evaluateEntry(curr, prev, market.strategy);
+    const signal = entryRule(curr, prev, market.strategy);
     if (signal) pending = { ...signal, referenceEntry: signal.entry, signalTime: curr.timestamp + market.timeframeMs };
   }
   const last = data.at(-1);

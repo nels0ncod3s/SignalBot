@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { MARKETS } = require('../markets');
-const { computeIndicators, evaluateEntry, indicatorsReady, validateCandles } = require('../strategy');
+const { computeIndicators, evaluateEntry, indicatorsReady, validateCandles, evaluateSetup } = require('../strategy');
 const { getCurrentSignal, MAX_SIGNAL_AGE_MS } = require('../signals');
 const { createProviders } = require('../market-data');
 const { createTelegram } = require('../telegram_bot');
@@ -15,9 +15,10 @@ const gold = MARKETS[1], btc = MARKETS[0], duration = gold.timeframeMs;
 function fixture() {
   const candles = Array.from({ length: 55 }, (_, i) => {
     const open = 100 + i * 0.1;
-    return { timestamp: 1700000000000 + i * duration, open, high: open + 0.2, low: open - 0.2, close: open + 0.1, volume: 100 };
+    return { timestamp: 1700000000000 + i * duration, open, high: open + 0.4, low: open - 0.4, close: open + 0.1, volume: 100 };
   });
   candles.at(-2).low -= 0.7;
+  candles.at(-1).close += 0.3;
   candles.at(-1).volume = 1000;
   const data = computeIndicators(candles);
   const signal = evaluateEntry(data.at(-1), data.at(-2), btc.strategy);
@@ -170,4 +171,24 @@ test('OANDA live account uses live pricing and broker tradeability', async () =>
   } });
   const quote = await p.quote(gold);
   assert.equal(quote.tradeable, false); assert.equal(quote.bid, 3000); assert.equal(quote.ask, 3000.4);
+});
+test('BTC refuses an unconfirmed range break while legacy comparison can still evaluate it', () => {
+  const { candles } = fixture(), data = computeIndicators(candles);
+  const curr = data.at(-1), prev = { ...data.at(-2), high: curr.close + 0.01 };
+  const filtered = evaluateSetup(curr, prev, btc.strategy);
+  assert.equal(filtered.signal, null);
+  assert.equal(filtered.reason, 'unconfirmed-breakout');
+  assert.ok(evaluateEntry(curr, prev, { volumeMultiplier: 2 }));
+});
+test('BTC rejects costs larger than its configured risk allowance', () => {
+  const { candles } = fixture(), data = computeIndicators(candles);
+  const result = evaluateSetup(data.at(-1), data.at(-2), { ...btc.strategy, maxEstimatedCostR: 0.01 });
+  assert.equal(result.reason, 'cost-heavy');
+  assert.equal(result.signal, null);
+});
+test('live spread is included in the cost gate, even when spread alone is acceptable', async () => {
+  const f = providerFixture(), data = computeIndicators(f.candles), atr = data.at(-1).atr;
+  const market = { ...btc, strategy: { ...btc.strategy, maxEstimatedCostR: f.signal.estimatedFeeR + 0.01 } };
+  f.providers.quote = async () => ({ bid: f.signal.entry - atr * 0.04, ask: f.signal.entry + atr * 0.04, timestamp: f.now, tradeable: true });
+  assert.equal((await getCurrentSignal(market, f.providers, f.now)).status, 'cost-heavy');
 });

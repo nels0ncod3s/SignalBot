@@ -110,8 +110,14 @@ function indicatorsReady(c) {
 
 // Trend/pullback/volume entry rule. `curr` and `prev` must already have indicators attached.
 // Returns { direction, entry, sl, tp } or null if no entry condition is met.
-function evaluateEntry(curr, prev, { volumeMultiplier = VOL_MULT } = {}) {
-  if (!indicatorsReady(curr) || !indicatorsReady(prev)) return null;
+function evaluateSetup(curr, prev, {
+  volumeMultiplier = VOL_MULT,
+  requireBreakout = false,
+  maxEstimatedCostR = Infinity,
+  roundTripFeeRate = 0.0015,
+  rewardR = REWARD_R_MULT,
+} = {}) {
+  if (!indicatorsReady(curr) || !indicatorsReady(prev)) return { signal: null, reason: "warming-up" };
 
   const isUptrend = curr.close > curr.trendEma;
   const isDowntrend = curr.close < curr.trendEma;
@@ -119,17 +125,28 @@ function evaluateEntry(curr, prev, { volumeMultiplier = VOL_MULT } = {}) {
   const shortPullback = prev.high >= prev.pullbackEma && curr.close < curr.pullbackEma;
   const volOk = volumeMultiplier === null || curr.volume > curr.volSma * volumeMultiplier;
 
+  let signal;
   if (isUptrend && longPullback && volOk) {
     const entry = curr.close;
     const risk = Math.max(RISK_ATR_MULT * curr.atr, entry - curr.low);
-    return { direction: "LONG", entry, sl: entry - risk, tp: entry + REWARD_R_MULT * risk };
+    signal = { direction: "LONG", entry, sl: entry - risk, tp: entry + rewardR * risk };
   }
   if (isDowntrend && shortPullback && volOk) {
     const entry = curr.close;
     const risk = Math.max(RISK_ATR_MULT * curr.atr, curr.high - entry);
-    return { direction: "SHORT", entry, sl: entry + risk, tp: entry - REWARD_R_MULT * risk };
+    signal = { direction: "SHORT", entry, sl: entry + risk, tp: entry - rewardR * risk };
   }
-  return null;
+  if (!signal) return { signal: null, reason: "no-signal" };
+  if (requireBreakout && !(signal.direction === "LONG" ? curr.close > prev.high : curr.close < prev.low)) {
+    return { signal: null, reason: "unconfirmed-breakout" };
+  }
+  const estimatedFeeR = roundTripFeeRate * signal.entry / Math.abs(signal.entry - signal.sl);
+  if (estimatedFeeR > maxEstimatedCostR) return { signal: null, reason: "cost-heavy" };
+  return { signal: { ...signal, estimatedFeeR }, reason: "signal" };
+}
+
+function evaluateEntry(curr, prev, options) {
+  return evaluateSetup(curr, prev, options).signal;
 }
 
 module.exports = {
@@ -140,5 +157,6 @@ module.exports = {
   computeIndicators,
   indicatorsReady,
   evaluateEntry,
+  evaluateSetup,
   REWARD_R_MULT,
 };

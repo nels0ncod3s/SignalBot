@@ -26,7 +26,7 @@ Fill in your Telegram bot token and chat ID in `config.json`, or set the corresp
 
 ### Enable gold
 
-Gold uses **OANDA XAU_USD**, not a tokenized-gold cryptocurrency or a crypto perpetual. Obtain the token and account ID from your OANDA v20 account and confirm that its available instruments include XAU_USD. Availability depends on the account's OANDA entity/region. A practice account is sufficient if it offers this instrument. Do not select `live` unless your credentials belong to that environment.
+Gold uses **OANDA XAU_USD**, not a tokenized-gold cryptocurrency or a crypto perpetual. Obtain the token and account ID from your OANDA v20 account and confirm that its available instruments include XAU_USD. Availability depends on the account's OANDA entity/region. OANDA Global Markets (where the country selector routes Nigeria) and OANDA TMS do not support this v20 integration; do not register there expecting an API token. A practice account is sufficient if it offers this instrument. Do not select `live` unless your credentials belong to that environment.
 
 Set `OANDA_API_TOKEN`, `OANDA_ACCOUNT_ID`, and `OANDA_ENVIRONMENT`, then restart/redeploy. The equivalent `config.json` fields are `oandaApiToken`, `oandaAccountId`, and `oandaEnvironment`. Without those credentials, gold reports unavailable while Bitcoin continues to run. The bot never opens or closes broker positions, even when using a live data account.
 
@@ -46,20 +46,22 @@ Automatic alerts are deduplicated per symbol/timeframe/candle. Only successful T
 
 - Valid numeric OHLCV data, strictly increasing candle timestamps, and enough indicator warm-up.
 - The newest completed candle closed **within the last three minutes**; forming candles are excluded by time and OANDA's `complete` flag. Candle gaps skip entry across that gap.
-- Strategy entry conditions: EMA50 trend, EMA8 pullback/reclaim; BTC additionally requires volume above 2× its 10-candle SMA.
+- Strategy entry conditions: EMA50 trend, EMA8 pullback/reclaim; BTC additionally requires volume above 2× its 10-candle SMA, a close beyond the previous candle's range, and estimated fees no greater than 0.15R of initial risk.
 - A tradeable quote, no more than 60 seconds old.
 - Bid/ask spread no greater than **0.10×ATR**.
 - Current direction-specific bid/ask within **0.25×ATR** of the reference entry.
+- For BTC, estimated fees plus the current spread must still fit within **0.15R** using that indicative entry and the original stop. The fee assumption is 0.15% round-trip; adjust `markets.js` to your intended execution venue.
 
 These limits are explicit in `markets.js` and `signals.js`. They are conservative baseline rules, not optimised gold parameters. Gold's daily/session breaks and weekends naturally produce no fresh entry; broker pricing also supplies tradeability status.
 
-Messages show the **reference candle-close entry**, current indicative bid/ask, stop, target, candle-close UTC time and expiry. The reference 3:1 ratio can differ from the ratio at a later execution price. A qualifying signal is a rule match, not evidence of a profitable trade. If Telegram is unavailable until expiry, that alert is deliberately skipped rather than sent late.
+Messages show the **reference candle-close entry**, current indicative bid/ask, stop, target, candle-close UTC time and expiry. BTC messages also show estimated cost drag and potential net reward/risk at the quote. This is a target-payoff scenario, not expected return or confidence. The reference 3:1 ratio can differ from the ratio at a later execution price. A qualifying signal is a rule match, not evidence of a profitable trade. If Telegram is unavailable until expiry, that alert is deliberately skipped rather than sent late.
 
 ## Backtesting and history
 
 ```sh
 npm test
 npm run backtest
+npm run research
 node backtest.js --mode single
 node fetch_data_4h.js 30m 3 BTC/USDT
 node fetch_data_4h.js 30m 3 XAU/USD
@@ -74,7 +76,7 @@ Backtest `--mode independent` (default) models every entry independently, matchi
 
 Costs are calculated per trade relative to its actual stop distance: `--fee` is the **round-trip decimal rate**, `--spread` is the round-trip price-unit spread, `--slippage` is price units per side. BTC defaults to a 0.0015 round-trip fee assumption; gold defaults to zero fees and warns when spread is omitted. The gold command above uses **illustrative**, not measured, spread/slippage. Use your broker's costs. Shared reports use actual gross/net R, eliminating the old 2.5R-versus-3R scoring error. Legacy logs without cost fields cannot provide cost-adjusted results.
 
-The bundled BTC history ends in July 2026. The corrected all-entry simulation on that history is negative after the default cost assumption; the code does not claim a proven trading edge. Calendar splits are labelled diagnostic, not untouched out-of-sample validation. Historical execution approximates fills; it cannot reproduce quote freshness, variable live spreads, intrabar sequence or all alert transport delays. Overlapping R totals are not a portfolio return or independent statistical observations.
+The bundled BTC history ends in July 2026. The current filtered simulation on that history remains slightly negative after the default cost assumption; the code does not claim a proven trading edge. Calendar splits are labelled diagnostic, not untouched out-of-sample validation. The filters remove about 70% of entries and improve fee economics, but win rate barely changes and the last evaluation block remains negative. See [the research record](docs/btc-signal-research.md) for all limitations and reproduction. Historical execution approximates fills; it cannot reproduce quote freshness, variable live spreads, intrabar sequence or all alert transport delays. Overlapping R totals are not a portfolio return or independent statistical observations.
 
 ## Hosting and health
 
